@@ -1,0 +1,70 @@
+{
+    "name": "Connections Navigation",
+    "title": "Connections Navigation",
+    "description": "Configuration for the Connections 8 navigation bar.",
+    "services": [
+        "Connections"
+    ],
+    "state": "enabled",
+    "extensions": [
+        {
+            "name": "connections-nav",
+            "type": "com.hcl.connections.nav",
+            "translations": {
+                "": {
+                    "nav.name.homepage": "Homepage"
+                },
+                "en": {
+                    "nav.name.homepage": "Homepage"
+                },
+                "de": {
+                    "nav.name.homepage": "Startseite"
+                }
+            },
+            "payload": {
+                "customEntries": [
+                    {
+                        "id": "intranet",
+                        "name": "Customer Intranet",
+                        "action": "add",
+                        "link": "https://intranet.customer.com",
+                        "icon": "https://intranet.customer.com/logo.png",
+                        "order": 500,
+                        "submenu": [],
+                        "location": "bottom"
+                    },
+                    {
+                        "id": "homepage",
+                        "name": "%nls:nav.name.homepage",
+                        "action": "update"
+                    },
+                    {
+                        "id": "more",
+                        "name": "More",
+                        "action": "update",
+                        "submenu": [
+                            {
+                                "id": "activities",
+                                "name": "Activities",
+                                "action": "remove"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "app1",
+                        "name": "Application 1",
+                        "action": "add",
+                        "link": "https://intranet.customer.com/app1",
+                        "icon": "https://intranet.customer.com/app1.png",
+                        "order": 1000,
+                        "submenu": [],
+                        "location": "more"
+                    }
+                ],
+                "cacheExpiration": 20000
+            },
+            "path": "global",
+            "state": "enabled"
+        }
+    ]
+}

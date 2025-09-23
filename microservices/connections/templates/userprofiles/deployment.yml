@@ -1,0 +1,105 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: userprofiles
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      name: userprofiles
+      labels:
+        name: userprofiles
+    spec:
+      containers:
+        - name: userprofiles
+          image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/user-profile-service
+          env:
+            - name: SC_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: smartcloud-env-name
+            - name: DOCKER_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-name
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-port
+            - name: server
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-interservice-host
+            - name: CNX_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-port
+            - name: s2sToken
+              valueFrom:
+                configMapKeyRef:
+                    name: connections-env
+                    key: user-profile-service-cnx-s2stoken
+            - name: enabledCollectors
+              value: "directNetwork,orgChart,sand,activityStream,viewingData,ownedCommunities,collaboration"
+            - name: collectorsRefreshPeriods
+              value: "directNetwork:5,orgChart:5,sand:1,activityStream:1,viewingData:1,ownedCommunities:5,collaboration:1"
+            - name: s2sToken
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-cnx-s2stoken
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-debug
+            - name: searchPort
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-search-port
+            - name: profilesPort
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-profile-port
+            - name: communitiesPort
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-communities-port
+            - name: userFile
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-user-file
+            - name: opensocialPort
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-interservice-port
+            - name: HIGHWAY_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-highway-port
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: userprofiles
+              containerPort: 9100
+          readinessProbe:
+            httpGet: {path: '/userprofileservice/api/v1/userprofile/userprofile/events/scoring?events=[]',
+            port: 9100, scheme: HTTP}
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+      imagePullSecrets:
+        - name: myregkey

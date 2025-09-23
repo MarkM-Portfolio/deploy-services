@@ -1,0 +1,32 @@
+﻿INFORMATIONS SUR LA LICENCE 
+
+Nom du Programme (numéro du Programme) : 
+HCL Connections Component Pack v6.5 CR1 (extension)
+
+Les conditions types suivantes s’appliquent à l’utilisation du Programme par le Titulaire de la licence. 
+
+Droit limité d’utilisation 
+
+Comme indiqué dans le Contrat-cadre de licence et dans les présentes Informations sur la licence, HCL concède au Titulaire de la licence un droit limité d’utilisation du Programme. Ce droit est limité au niveau d’Utilisation autorisée, tel qu’une unité de valeur par processeur (« PVU »), une unité de valeur par ressource (« RVU ») ou une unité de valeur (« VU »), ou à un autre niveau donné d’utilisation payé par le Titulaire de la licence, tel qu’indiqué dans la Preuve du droit. L’utilisation par le Titulaire de la licence peut également être limitée à un appareil déterminé ou à une utilisation en tant que Programme de support, ou être soumise à d’autres restrictions. Étant donné que le Titulaire de la licence n’a pas payé pour la totalité de la valeur économique du Programme, aucune autre utilisation n’est permise sans le paiement de frais supplémentaires. En outre, le Titulaire de la licence n’est pas autorisé à utiliser le Programme pour fournir des services informatiques commerciaux à tout tiers, pour fournir des services commerciaux d’hébergement ou de temps partagé, ou pour concéder en sous-licence ou louer le Programme, sauf indication contraire expresse dans les contrats applicables en vertu desquels le Titulaire de la licence est autorisé à utiliser le Programme. D’autres droits peuvent être disponibles pour le Titulaire de la licence, sous réserve du paiement de frais supplémentaires ou en vertu de conditions différentes ou supplémentaires. HCL se réserve le droit de déterminer si ces autres droits seront disponibles pour le Titulaire de la licence. 
+
+Caractéristiques 
+
+Les caractéristiques du Programme figurent dans les sections collectives « Description et informations techniques » dans les Annonces du Programme. 
+
+Utilisations interdites 
+
+Le Titulaire de la licence ne peut pas utiliser ou autoriser autrui à utiliser le Programme si un dysfonctionnement du Programme est susceptible d’entraîner des dommages environnementaux, des dommages matériels, des blessures ou la mort. 
+
+Programme à utilisation limitée 
+
+Le Programme n’est fourni qu’aux fins de son utilisation avec le(s) Programme(s) et/ou Service(s) désigné(s) indiqué(s) ci-après ou toute version future. Le Titulaire de la licence n’est autorisé à utiliser le Programme avec aucun autre logiciel ou service. 
+
+Programme(s) et/ou Services(s) désigné(s) : 
+
+HCL Connections 6.5
+IBM Connections 6.0 Interim Feature Release 1
+IBM Connections 6.0 
+
+Outre ce qui précède, les conditions suivantes s’appliquent à l’utilisation du Programme par le Titulaire de la licence. 
+
+Le présent document d’Informations sur la licence constitue la Preuve du droit au Programme du Titulaire de la licence. Aucun autre droit n’est requis pour utiliser le Programme. 

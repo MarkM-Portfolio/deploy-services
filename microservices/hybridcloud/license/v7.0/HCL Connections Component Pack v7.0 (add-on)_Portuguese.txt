@@ -1,0 +1,35 @@
+﻿INFORMAÇÃO DE LICENÇA 
+
+Nome do Programa: 
+Pacote de Componentes HCL Connections v7.0 (add-on)
+
+Os termos padrão a seguir se aplicam ao uso do Programa pelo Licenciado. 
+
+Direito de uso limitado 
+
+Conforme descrito no Contrato de Licença Principal e nestas Informações de Licença, a HCL concede ao Licenciado um direito limitado de usar o Programa. Esse direito está limitado ao nível de Uso Autorizado, como uma Unidade de Valor do Processador ("PVU"), uma Unidade de Valor do Recurso ("RVU"), uma Unidade de Valor ("VU") ou outro nível de uso especificado, pago pelo Licenciado, conforme evidenciado na Prova de Titularidade. O uso do Licenciado também pode ser limitado a uma máquina especificada, ou apenas como um Programa de Suporte, ou sujeito a outras restrições. Como o Licenciado não pagou por todo o valor econômico do Programa, nenhum outro uso é permitido sem o pagamento de taxas adicionais. Além disso, o Licenciado não está autorizado a usar o Programa para fornecer serviços comerciais de TI a terceiros, para oferecer hospedagem comercial ou timeshare, ou para sublicenciar, alugar ou arrendar o Programa, a menos que expressamente previsto nos contratos aplicáveis sob os quais o Licenciado obtém autorizações para usar o Programa. Direitos adicionais podem estar disponíveis para o Licenciado, sujeitos ao pagamento de taxas adicionais ou sob termos diferentes ou complementares. A HCL se reserva o direito de determinar se esses direitos adicionais estão disponíveis para o Licenciado. 
+
+Especificações 
+
+As especificações do programa podem ser encontradas nas seções coletivas Descrição e Informações Técnicas das Cartas de Comunicados do Programa. 
+
+Usos Proibidos 
+
+O Licenciado não pode usar ou autorizar terceiros a usar o Programa se uma falha do Programa puder levar à morte, ferimentos corporais ou danos à propriedade ou ao meio ambiente. 
+
+Programa de Uso Limitado 
+
+Este programa é fornecido apenas para uso com Programa(s) e/ou Serviço(s) Nomeado(s) identificado(s) abaixo ou seus sucessores. É proibido ao Licenciado usar este Programa em conexão com qualquer outro software ou serviço. 
+
+Programa(s) e/ou Serviço(s) Nomeado(s): 
+
+HCL Connections 7.0
+HCL Connections 6.5
+HCL Connections 6.0 Interim Feature Release 1
+HCL Connections 6.0 
+
+Além do estabelecido acima, os termos a seguir se aplicam ao uso do Programa pelo Licenciado. 
+
+A Prova de Titularidade do Licenciado para o Programa é este Documento de Informações de Licença. Não são necessários direitos adicionais para se usar o Programa. 
+
+

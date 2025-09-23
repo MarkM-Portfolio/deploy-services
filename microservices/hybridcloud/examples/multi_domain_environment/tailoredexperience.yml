@@ -1,0 +1,6 @@
+global:
+  onPrem: true
+  image:
+    repository: cp1.internal.cnx-dev.net:5000/connections
+
+replicaCount: 3

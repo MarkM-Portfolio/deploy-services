@@ -1,0 +1,9 @@
+global:
+  onPrem: true
+  image:
+    repository: cp1.internal.cnx-dev.net:5000/connections
+mongodb:
+  createSecret: false
+appregistry-service:
+  deploymentType: hybrid_cloud
+replicaCount: 3

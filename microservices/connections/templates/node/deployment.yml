@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: node
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        service: node
+    spec:
+      containers:
+      - env:
+        - name: ORIENT_CNX_INTERSERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: orient-cnx-interservice-port
+        - name: ORIENT_CNX_INTERSERVICE_SCHEME
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: orient-cnx-interservice-scheme
+        - name: ORIENT_CNX_INTERSERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: orient-cnx-interservice-host                
+        - name: ORIENT_CNX_SCHEME
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: orient-cnx-scheme
+        - name: PORT
+          value: "8000"
+        - name: NODE_DEBUG
+          value: "0"
+        - name: ORIENT_CNX_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: orient-cnx-host
+        - name: ORIENT_CNX_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: orient-cnx-port
+        image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/orient_nginx
+        name: nodecontainer
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+      restartPolicy: Always

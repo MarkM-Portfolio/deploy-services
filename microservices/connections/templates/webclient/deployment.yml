@@ -1,0 +1,67 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webclient
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  template:
+    metadata:
+      name: webclient
+      labels:
+        name: webclient
+    spec:
+      containers:
+        - name: webclient
+          image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/orient-web
+          env:
+            - name: ORIENT_CNX_INTERSERVICE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-interservice-port
+            - name: ORIENT_CNX_INTERSERVICE_SCHEME
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-interservice-scheme
+            - name: ORIENT_CNX_INTERSERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-interservice-host
+            - name: ORIENT_CNX_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-port
+            - name: ORIENT_CNX_SCHEME
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-scheme
+            - name: PORT
+              value: "8000"
+            - name: NODE_DEBUG
+              value: "0"
+            - name: ORIENT_CNX_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-host
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: webclient
+              containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /social/views/login.html
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+      imagePullSecrets:
+        - name: myregkey

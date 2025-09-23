@@ -1,0 +1,235 @@
+global:
+  image:
+    repository: null
+  onPrem: null
+  ic:
+    host: icbvt2.cnx.cwp.pnp-hcl.com
+  auth:
+    schema: '3'
+  client:
+    id: change_me
+    secret: change_me
+  enabled: false
+  tenant:
+    id: change_me
+  share:
+    service:
+      endpoint: /teams-share-service
+    ui:
+      files:
+        api: /files/basic/api
+ 
+teams-share-ui :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    configMapKeyRef:
+      name: connections-env
+  git_commit: 9abe57182a6e25b145360e61fbca2ab00415e1b8
+  global:
+    onPrem: null
+  hostname: teams-share-ui
+  image:
+    pullPolicy: IfNotPresent
+    pullSecretName: myregkey
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: teams-share-ui
+  namespace: connections
+  node_env: production
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  scaler:
+    maxReplicas: 3
+    minReplicas: 1
+  service:
+    externalPort: 3000
+    internalPort: 3000
+    scheme: HTTP
+#    type: NodePort
+  teams:
+    configMapKeyRef:
+      name: integrations-msteams-env
+  timestamp: 20210115-144412
+teams-share-service :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    configMapKeyRef:
+      name: connections-env
+  git_commit: 0ac1c7d5959d46607a1454726909a7dee3e6099e
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    pullSecretName: myregkey
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: teams-share-service
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  scaler:
+    maxReplicas: 3
+    minReplicas: 1
+  service:
+    externalPort: 3000
+    internalPort: 3000
+    scheme: HTTP
+#    type: NodePort
+  timestamp: 20210119-144505
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    enabled: true
+    hosts:
+    - host: test.example.com
+      paths: []
+    name: cnx-ingress-msteams
+    tls: []
+teams-tab-api :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  environment:
+  - key: ic-host
+    name: CONNECTIONS_WAS_HOST
+  git_commit: 32b39ebed4d022a1999e22f921ecd17e48935bb4
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    pullSecretName: myregkey
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  livenessProbe:
+    httpGetPath: /teams-tab/api/v0/health
+    initialDelaySeconds: 5
+    periodSeconds: 30
+    timeoutSeconds: 29
+  name: teams-tab-api
+  namespace: connections
+  ports:
+  - 3000
+  readinessProbe:
+    httpGetPath: /teams-tab/api/v0/ready
+    initialDelaySeconds: 5
+    periodSeconds: 30
+    timeoutSeconds: 29
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  scaler:
+    maxReplicas: 3
+    minReplicas: 1
+  service:
+    port: 3000
+  timestamp: 20201214-182048
+teams-tab-ui :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  git_commit: eca781239f0821dfd6b4cafe7dde219e2fee2a58
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    pullSecretName: myregkey
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  livenessProbe:
+    httpGetPath: /healthy
+    initialDelaySeconds: 5
+    periodSeconds: 30
+    timeoutSeconds: 29
+  name: teams-tab-ui
+  namespace: connections
+  ports:
+  - 8080
+  readinessProbe:
+    httpGetPath: /ready
+    initialDelaySeconds: 5
+    periodSeconds: 30
+    timeoutSeconds: 29
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  scaler:
+    maxReplicas: 3
+    minReplicas: 1
+  service:
+    port: 8080
+  timestamp: 20210115-113013

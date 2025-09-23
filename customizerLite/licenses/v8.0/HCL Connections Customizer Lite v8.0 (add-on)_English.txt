@@ -1,0 +1,36 @@
+﻿LICENSE INFORMATION 
+
+Program Name: 
+HCL Connections Customizer Lite v8.0 (add-on)
+
+The following standard terms apply to Licensee's use of the Program. 
+
+Limited use right 
+
+As described in the Master License Agreement and this License Information, HCL grants Licensee a limited right to use the Program. This right is limited to the level of Authorized Use, such as a Processor Value Unit ("PVU"), a Resource Value Unit ("RVU"), a Value Unit ("VU"), or other specified level of use, paid for by Licensee as evidenced in the Proof of Entitlement. Licensee's use may also be limited to a specified machine, or only as a Supporting Program, or subject to other restrictions. As Licensee has not paid for all of the economic value of the Program, no other use is permitted without the payment of additional fees. In addition, Licensee is not authorized to use the Program to provide commercial IT services to any third party, to provide commercial hosting or timesharing, or to sublicense, rent, or lease the Program unless expressly provided for in the applicable agreements under which Licensee obtains authorizations to use the Program. Additional rights may be available to Licensee subject to the payment of additional fees or under different or supplementary terms. HCL reserves the right to determine whether to make such additional rights available to Licensee. 
+
+Specifications 
+
+Program's specifications can be found in the collective Description and Technical Information sections of the Program's Announcement Letters. 
+
+Prohibited Uses 
+
+Licensee may not use or authorize others to use the Program if failure of the Program could lead to death, bodily injury, or property or environmental damage. 
+
+Limited Use Program 
+
+This Program is supplied only for use with Named Program(s) and/or Service(s) identified below or their successors. Licensee is prohibited from using this Program in connection with any other software or service. 
+
+Named Program(s) and/or Service(s): 
+
+HCL Connections 8.0
+HCL Connections 7.0
+HCL Connections 6.5
+HCL Connections 6.0 Interim Feature Release 1
+HCL Connections 6.0 
+
+In addition to the above, the following terms apply to Licensee's use of the Program. 
+
+Licensee's Proof of Entitlement to the Program is this License Information document. No additional entitlements are required in order to use the Program. 
+
+

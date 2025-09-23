@@ -1,0 +1,629 @@
+{{- if .Values.mongo.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo-connections-persistent-storage-mongo-0
+spec:
+ capacity:
+   storage: {{ .Values.mongo.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: mongo-persistent-storage-mongo-0
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/mongo-node-0/data/db
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo-connections-persistent-storage-mongo-1
+spec:
+ capacity:
+   storage: {{ .Values.mongo.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: mongo-persistent-storage-mongo-1
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/mongo-node-1/data/db
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo-connections-persistent-storage-mongo-2
+spec:
+ capacity:
+   storage: {{ .Values.mongo.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: mongo-persistent-storage-mongo-2
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/mongo-node-2/data/db
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+{{- end }}   
+---
+{{- if .Values.mongo5.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo5-connections-persistent-storage-mongo5-0
+spec:
+ capacity:
+   storage: {{ .Values.mongo5.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: mongo5-persistent-storage-mongo5-0
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/mongo5-node-0/data/db
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo5-connections-persistent-storage-mongo5-1
+spec:
+ capacity:
+   storage: {{ .Values.mongo5.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: mongo5-persistent-storage-mongo5-1
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/mongo5-node-1/data/db
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo5-connections-persistent-storage-mongo5-2
+spec:
+ capacity:
+   storage: {{ .Values.mongo5.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: mongo5-persistent-storage-mongo5-2
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/mongo5-node-2/data/db
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+{{- end }}    
+---
+{{- if .Values.solr.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: solr-pv-0
+spec:
+ capacity:
+   storage: {{ .Values.solr.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: solr-data-pvc-solr-0
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/solr-data-solr-0
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: solr-pv-1
+spec:
+ capacity:
+   storage: {{ .Values.solr.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: solr-data-pvc-solr-1
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/solr-data-solr-1
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: solr-pv-2
+spec:
+ capacity:
+   storage: {{ .Values.solr.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: solr-data-pvc-solr-2
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/solr-data-solr-2
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+{{- end }}
+{{- if .Values.zk.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: zookeeper-pv-0
+spec:
+ capacity:
+   storage: {{ .Values.zk.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: zookeeper-data-pvc-zookeeper-0
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/zookeeper-data-zookeeper-0
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: zookeeper-pv-1
+spec:
+ capacity:
+   storage: {{ .Values.zk.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: zookeeper-data-pvc-zookeeper-1
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/zookeeper-data-zookeeper-1
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: zookeeper-pv-2
+spec:
+ capacity:
+   storage: {{ .Values.zk.capacity.storage }}
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+ claimRef:
+   namespace: {{ .Values.namespace }}
+   name: zookeeper-data-pvc-zookeeper-2
+ nfs:
+   path: /{{ .Values.persistentVolumePath }}/zookeeper-data-zookeeper-2
+   server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+{{- end }}
+{{- if .Values.es.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-pv-backup
+  labels:
+    component: elasticsearch
+    role: es-pv-backup
+spec:
+  capacity:
+    storage: {{ .Values.es.capacity.storage }}
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  claimRef:
+    namespace: {{ .Values.namespace }}
+    name: es-pvc-backup
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esbackup
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-pv-data-0
+  labels:
+    component: elasticsearch
+    role: es-pv-data
+spec:
+  capacity:
+    storage: {{ .Values.es.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  claimRef:
+    namespace: {{ .Values.namespace }}
+    name: es-pvc-es-data-0
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esdata-0
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-pv-data-1
+  labels:
+    component: elasticsearch
+    role: es-pv-data
+spec:
+  capacity:
+    storage: {{ .Values.es.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  claimRef:
+    namespace: {{ .Values.namespace }}
+    name: es-pvc-es-data-1
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esdata-1
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-pv-data-2
+  labels:
+    component: elasticsearch
+    role: es-pv-data
+spec:
+  capacity:
+    storage: {{ .Values.es.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  claimRef:
+    namespace: {{ .Values.namespace }}
+    name: es-pvc-es-data-2
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esdata-2
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+{{- end }}
+{{- if .Values.es7.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-backup-7
+  labels:
+    component: elasticsearch7
+    role: es-backup-7
+spec:
+  capacity:
+    storage: {{ .Values.es7.capacity.storage }}
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esbackup-7
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-master-7-0
+  labels:
+    component: elasticsearch7
+    role: es-master-7-0
+spec:
+  capacity:
+    storage: {{ .Values.es7.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esmaster-7-0
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-master-7-1
+  labels:
+    component: elasticsearch7
+    role: es-master-7-1
+spec:
+  capacity:
+    storage: {{ .Values.es7.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esmaster-7-1
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-master-7-2
+  labels:
+    component: elasticsearch7
+    role: es-master-7-2
+spec:
+  capacity:
+    storage: {{ .Values.es7.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esmaster-7-2
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-data-7-0
+  labels:
+    component: elasticsearch7
+    role: es-data-7-0
+spec:
+  capacity:
+    storage: {{ .Values.es7.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esdata-7-0
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-data-7-1
+  labels:
+    component: elasticsearch7
+    role: es-data-7-1
+spec:
+  capacity:
+    storage: {{ .Values.es7.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esdata-7-1
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-data-7-2
+  labels:
+    component: elasticsearch7
+    role: es-data-7-2
+spec:
+  capacity:
+    storage: {{ .Values.es7.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/esdata-7-2
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+{{- end }}
+{{- if .Values.customizer.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: customervolume
+  labels:
+     app: customizervolumeapp
+spec:
+  capacity:
+    storage: {{ .Values.customizer.capacity.storage }}
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    namespace: {{ .Values.namespace }}
+    name: customizernfsclaim
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/customizations
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+{{- end }}
+{{- if .Values.opensearch.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-backup
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-backup
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolumeReclaimPolicy }}
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchbackup
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-master-0
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-master-0
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchmaster-0
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-master-1
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-master-1
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchmaster-1
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-master-2
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-master-2
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchmaster-2
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-data-0
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-data-0
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchdata-0
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-data-1
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-data-1
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchdata-1
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-data-2
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-data-2
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchdata-2
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-client-0
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-client-0
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchclient-0
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-client-1
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-client-1
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchclient-1
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opensearch-client-2
+  labels:
+    app: {{ .Values.opensearch.clusterName }}-client-2
+    app.kubernetes.io/instance: {{ .Values.opensearch.clusterName }}
+    app.kubernetes.io/name: opensearch
+spec:
+  capacity:
+    storage: {{ .Values.opensearch.capacity.storage }}
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  nfs:
+    path: /{{ .Values.persistentVolumePath }}/opensearchclient-2
+    server: {{required "A valid .Values.nfs.server entry required!" .Values.nfs.server }}
+---
+{{- end }}

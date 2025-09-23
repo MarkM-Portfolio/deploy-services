@@ -1,0 +1,63 @@
+###################################################################
+#       IBM Confidential
+#
+#       OCO Source Materials
+#
+#       Copyright IBM Corp. 2016, 2016
+#
+#       The source code for this program is not published or otherwise
+#       divested of its trade secrets, irrespective of what has been
+#       deposited with the U.S. Copyright Office.
+###################################################################
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: indexingservice
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: indexingservice
+      labels:
+        name: indexingservice
+    spec:
+      containers:
+      - name: indexingservice
+        image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/indexing-service
+        ports:
+        - containerPort: 9101
+        env:
+        - name: PEOPLE_SCORING_SERVICE_HOST
+          value: "people-scoring"
+        - name: PEOPLE_SCORING_SERVICE_PORT
+          value: "3000"
+        - name: PEOPLE_RELATIONSHIP_SERVICE_HOST
+          value: "people-relation"
+        - name: PEOPLE_RELATIONSHIP_SERVICE_PORT
+          value: "3000"
+        - name: CONNECTIONS_EVENTS_SUBSCRIPTION_NAME
+          value: "indexing"
+        - name: ZOOKEEPER_NODE
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: zookeeper-nodes
+        - name: REDIS_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: redis-node-service-name
+        - name: REDIS_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: redis-node-service-port
+        readinessProbe:
+          exec:
+            command:
+              - /opt/ibm/toscana/readiness.sh
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      imagePullSecrets:
+        - name: myregkey

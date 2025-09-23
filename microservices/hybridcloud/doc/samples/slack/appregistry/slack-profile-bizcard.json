@@ -1,0 +1,122 @@
+{
+    "name": "Slack Chat Integrations",
+    "title": "Slack Chat Integrations",
+    "description": "Slack chat for bizcard and profiles",
+    "services": [
+        "Connections"
+    ],
+    "state": "enabled",
+    "extensions": [
+        {
+            "ext_id": "com.slack.v3.bizcard.chat",
+            "name": "Slack Chat Integration",
+            "title": "Slack Chat Integration",
+            "description": "Enable 1-1 chat from profile and bizcard",
+            "translations": {
+                "": {
+                    "SlackBizcardChat-Connections_text": "Chat"
+                },
+                "en": {
+                    "SlackBizcardChat-Connections_text": "Chat"
+                },
+                 "fr": {
+                    "SlackBizcardChat-Connections_text": "Discuter"
+                },
+                "fi": {
+                    "SlackBizcardChat-Connections_text": "Keskustele"
+                },
+                "he": {
+                    "SlackBizcardChat-Connections_text": "צ'אט"
+                },
+                "hr": {
+                    "SlackBizcardChat-Connections_text": "Razgovor"
+                },
+                "hu": {
+                    "SlackBizcardChat-Connections_text": "Csevegés"
+                },
+                "it": {
+                    "SlackBizcardChat-Connections_text": "Conversa"
+                },
+                "ja": {
+                    "SlackBizcardChat-Connections_text": "チャット"
+                },
+                "ko": {
+                    "SlackBizcardChat-Connections_text": "대화"
+                },
+                "no": {
+                    "SlackBizcardChat-Connections_text": "Samtale"
+                },
+                "pl": {
+                    "SlackBizcardChat-Connections_text": "Czat"
+                },
+                "pt": {
+                    "SlackBizcardChat-Connections_text": "Conversação"
+                },
+                "ru": {
+                    "SlackBizcardChat-Connections_text": "Чат"
+                },
+                "sk": {
+                    "SlackBizcardChat-Connections_text": "Rozhovor"
+                },
+                "sl": {
+                    "SlackBizcardChat-Connections_text": "Klepet"
+                },
+                "sv": {
+                    "SlackBizcardChat-Connections_text": "Chat"
+                },
+                "th": {
+                    "SlackBizcardChat-Connections_text": "แชท"
+                },
+                "tr": {
+                    "SlackBizcardChat-Connections_text": "Sohbet"
+                },
+                "zh": {
+                    "SlackBizcardChat-Connections_text": "交谈"
+                },
+                "pt-BR": {
+                    "SlackBizcardChat-Connections_text": "Bate-papo"
+                },
+                "zh-TW": {
+                    "SlackBizcardChat-Connections_text": "會談"
+                },
+                "ca": {
+                    "SlackBizcardChat-Connections_text": "Xat"
+                },
+                "cs": {
+                    "SlackBizcardChat-Connections_text": "Konverzace"
+                },
+                "da": {
+                    "SlackBizcardChat-Connections_text": "Chat"
+                },
+                "de": {
+                    "SlackBizcardChat-Connections_text": "Chat"
+                },
+                "nl": {
+                    "SlackBizcardChat-Connections_text": "Chatten"
+                },
+                "ro": {
+                    "SlackBizcardChat-Connections_text": "Chat"
+                },
+                "bg": {
+                    "SlackBizcardChat-Connections_text": "Чат"
+                },
+                "es": {
+                    "SlackBizcardChat-Connections_text": "Conversación"
+                },
+                "ar": {
+                    "SlackBizcardChat-Connections_text": "محادثة"
+                }
+            },
+            "type": "com.hcl.appreg.ext.templatedLink",
+            "payload": {
+                "url": "",
+                "text": "%nls:SlackBizcardChat-Connections_text",
+                "href": "https://app.slack.com/client/{your-company-workspace}/${chatIdentity}",
+                "locator": "chat",
+                "target": "SlackChat"
+            },
+            "object": "com.hcl.appreg.object.person",
+            "state": "enabled"
+        }
+    ]
+}

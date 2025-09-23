@@ -1,0 +1,33 @@
+###################################################################
+# IBM Confidential
+#
+# OCO Source Materials
+#
+# Copyright IBM Corp. 2016, 2017
+#
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+###################################################################
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: redis
+    role: service
+    hostname: redis
+  name: redis
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+spec:
+  ports:
+    - name: redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379      
+  selector:
+    name: "redis"
+  type: LoadBalancer
+
+  

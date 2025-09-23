@@ -1,0 +1,19 @@
+{
+    "organization": "00000000-0000-0000-0000-000000000000",
+    "role": "read only",
+    "settings": [
+        {
+            "name": "COMMUNITIES_TEMPLATE",
+            "value": true
+        },
+        {
+            "name": "COMMUNITIES_TE_CREATION_WIZARD",
+            "value": true
+        },
+        {
+            "name": "COMMUNITIES_HIGHLIGHTS_AS_OVERVIEW",
+            "value": true
+        }
+    ],
+    "source": "highway"
+}

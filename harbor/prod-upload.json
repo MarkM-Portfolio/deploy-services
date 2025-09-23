@@ -1,0 +1,8 @@
+{
+  "description1": "List the charts (without version) that should not be pushed to Harbor production in helmskip.",
+  "description2": "Likewise, list the charts (with version) that should be included but not in connections_latest.json in helmadd.  Same for images.",
+  "helmskip": [],
+  "helmadd": [],
+  "imageskip": [ 'middleware-mongodb5' ],
+  "imageadd": []
+}

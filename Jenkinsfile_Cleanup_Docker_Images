@@ -1,0 +1,242 @@
+/*
+#############################################################################################
+
+Build script to delete both dangling and unused images
+Author: naveen.bajjuri@hcl.com
+Creation Date: 2020.10.14
+
+2022.04.20 - chris.griffin@hcl.com - added cnx-non-fed agents, controller conditional and agent loop
+2021.07.29 - todd-strangio@hcl.com - clean up on cnxbldcent7-1 & cnxbldcent7-2 agents,general cleanup
+
+#############################################################################################
+*/
+
+gitURL = 'https://git.cwp.pnp-hcl.com/connections/'
+repos = 'deploy-services'
+webhookUrl = 'https://hclo365.webhook.office.com/webhookb2/a8a8e84f-45c5-434e-9410-8faa5749cca2@189de737-c93a-4f5a-8b68-6f4ca9941912/IncomingWebhook/47835e2c528c46b7851c56ac0935c0e8/233c4648-7ef9-48cc-b08f-d99aa84baa49'
+
+controller_url = JENKINS_URL.tokenize( '/' )
+controller = controller_url[-1]
+
+if (controller == 'cnx') {
+    githubCredId = 'connbld_github_api_token'
+    agent_array = ["cnx-docker1.cnx.cwp.pnp-hcl.com", "cnx-docker2.cnx.cwp.pnp-hcl.com", "cnxbldcent7-1", "cnxbldcent7-2"]
+} else if (controller == 'cnx-non-fed') {
+    githubCredId = 'connbldnp_github_api_token'
+    agent_array = ["cnx-nf-docker1.cnx.cwp.pnp-hcl.com", "cnx-nf-docker2.cnx.cwp.pnp-hcl.com"]
+} else {
+    echo "*** ERROR:  The script does not recognize the Jenkins controller.  The script is exiting.\n"
+    sendTeamsMessage()
+    System.exit(9)
+}
+
+/* ############################################################################################# */
+
+for (agent in agent_array) {
+    node(agent) {
+        ws_lin = "/tmp/${JOB_BASE_NAME}"
+        ws(ws_lin) {
+            doit(agent)
+        }
+    }
+}
+
+sendTeamsMessage()
+
+//**********************************************************************************************
+// Functions
+//**********************************************************************************************
+
+void doit(agent) {
+    stage("Pre-build on ${agent}") {
+        setEnvironmentVariables()
+        getBuildCauses()
+        setBuildParametersAndProperties()
+        checkoutAndSetup()
+        printEnvironmentVariables()
+    }
+
+    stage("Build on ${agent}") {
+        try {
+            buildStage()
+        } catch(e) {
+            echo e.toString()
+            currentBuild.result = "FAILURE"
+        }
+    }
+
+    stage("Post-build on ${agent}") {
+        try {
+            deleteWorkspace()
+        } catch(e) {
+            echo e.toString()
+            currentBuild.result = "FAILURE"
+        }
+    }
+}
+
+void deleteWorkspace() {
+    try {
+        //deleteDir() // this defaults to deleting just WORKSPACE,
+        // this implementation removes the associated @tmp directory as well
+        echo "Deleting ${WORKSPACE} (if it exists)"
+        dir("${WORKSPACE}") {
+            deleteDir()
+        }
+
+        echo "Deleting ${WORKSPACE}@tmp (if it exists)"
+        dir("${WORKSPACE}@tmp") {
+            deleteDir()
+        }
+    } catch(e) {
+        echo "Caught exception: ${e}"
+    }
+}
+
+void setEnvironmentVariables() {
+    // The following used to create build label
+    now = new Date()
+    BUILD_TIMESTAMP = now.format("yyyyMMdd-HHmm", TimeZone.getTimeZone('America/New_York'))
+    currentBuild.displayName = JOB_BASE_NAME + "_" + BUILD_TIMESTAMP
+    currentBuild.description = ""
+
+    repoList = repos.split(",")
+}
+
+void getBuildCauses() {
+    causes = currentBuild.getBuildCauses()
+    causesShortDesc = causes.iterator().next().shortDescription // Started by user FirstName LastName
+    echo "${causesShortDesc}"
+}
+
+void setBuildParametersAndProperties() {
+    properties([
+        parameters([
+            string(
+                defaultValue: 'master',
+                description: '<BR><font color="blue" size="4">Git branch (default: master)<BR><BR></font>',
+                name: 'branchName',
+            ),
+            string(
+                defaultValue: '85',
+                description: '<BR><font color="blue" size="4">Percentage of disk usage needed to hit before this job will initiate pruning (default: 85)<BR><BR></font>',
+                name: 'Threshold',
+            )
+        ]),
+
+        buildDiscarder(logRotator(
+            //artifactDaysToKeepStr: '7',
+            artifactNumToKeepStr: '25',
+            //daysToKeepStr: '7',
+            numToKeepStr: '25')
+        ),
+        pipelineTriggers([cron('0 0 * * *')])
+    ])
+
+    if (( "${params.branchName}" ) && ("${params.branchName}" != null )) {
+        branchName = "${params.branchName}"
+    } else {
+        branchName = "master"
+    }
+    env.branchName = branchName
+}
+
+void checkoutAndSetup() {
+    deleteWorkspace()
+
+    for (String repoName : repoList) {
+        if (repoList.size() > 1) {
+            targetDir = repoName
+        } else {
+            targetDir= env.WORKSPACE
+        }
+
+        echo "Cloning repository '${repoName}' from '${gitURL}' into '${targetDir}' directory"
+        dir(targetDir) {
+            repoURL = gitURL + repoName
+            mapVars = checkout([
+                $class: 'GitSCM',
+                branches: [[
+                    name: branchName
+                ]],
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [[
+                    $class: 'CloneOption',
+                    shallow: true,
+                    reference: '',
+                    noTags: true,
+                    timeout: 60,
+                    honorRefspec: true
+                ]],
+                submoduleCfg: [],
+                userRemoteConfigs: [[
+                    credentialsId: githubCredId,
+                    url: repoURL
+                ]]
+            ])
+        }
+    }
+}
+
+void printEnvironmentVariables() {
+    echo "Environment Variables:\n\n"
+    echo "WORKSPACE = ${WORKSPACE}\n"
+    echo "BUILD_URL = ${BUILD_URL}\n"
+    echo "JENKINS_HOME = ${JENKINS_HOME}\n"
+    echo "JENKINS_URL = ${JENKINS_URL}\n"
+    echo "JOB_URL = ${JOB_URL}\n"
+    echo "BUILD_DISPLAY_NAME = ${BUILD_DISPLAY_NAME}\n"
+    echo "JOB_NAME = ${JOB_NAME}"
+    echo "JOB_BASE_NAME = ${JOB_BASE_NAME}"
+}
+
+void buildStage() {
+
+    if (isUnix()) {
+        sh '''
+            /bin/chmod -R 755 ${WORKSPACE}
+
+            whoami
+            echo PATH = ${PATH}
+            docker version
+
+            # Below command will get us percentage of root partition used, if under ${Threshold}%, don't bother pruning
+            export USED_SPACE=`df -h / | grep / | awk '{print $5}' | sed s/\\%//`
+            echo USED_SPACE = ${USED_SPACE}
+            echo Threshold = ${Threshold}
+
+            if [ ${USED_SPACE} -ge ${Threshold} ]; then
+                echo "Used space on root partition is ${USED_SPACE}%, which meets or exceeds the percentage defined by the Threshold parameter ... initiate pruning ..."
+                env
+                cd ${WORKSPACE}/scripts
+                ./cleanup_images.sh
+                if [ \${?} -eq 0 ]; then
+                    echo "SUCCESS: Removed all images not referenced by any container."
+                else
+                    echo "FAILURE: Failed to delete unused images"
+                    exit 1
+                fi
+            else
+                echo "Used space on root partition is ${USED_SPACE}%, which is below our threshold of ${Threshold}%, no need to prune."
+            fi
+        '''
+    }
+}
+
+void sendTeamsMessage() {
+    if(manager.logContains(".*The script does not recognize the Jenkins controller.*")) {
+        message = "The script does not recognize the Jenkins controller.  Please investigate."
+        echo "Sending the following notification to Teams:\n${message}\n"
+        office365ConnectorSend message: "${message}", color: "#FF0000", webhookUrl: "${webhookUrl}"
+    } else if (manager.logContains(".*Failed to delete unused images.*")) {
+        message = "The clean_images.sh script returned an error code.  There was a problem pruning images on one or more of the ${controller} agents."
+        echo "Sending the following notification to Teams:\n${message}\n"
+        office365ConnectorSend message: "${message}", color: "#FF0000", webhookUrl: "${webhookUrl}"
+    } else if (manager.logContains(".*Removed all images not referenced by any container.*")) {
+        message = "Pruning has completed successfully on the ${controller} agents."
+        echo "Sending the following notification to Teams:\n${message}\n"
+        office365ConnectorSend message: "${message}", color: "#00FF00", webhookUrl: "${webhookUrl}"
+    } else {
+        echo "There weren't any agents above the threshold on the ${controller} Jenkins controller.  No need to send a Teams notification."
+    }   
+}

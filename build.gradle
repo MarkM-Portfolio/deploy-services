@@ -1,0 +1,34 @@
+defaultTasks 'publishArtifacts'
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.netflix.nebula:gradle-ospackage-plugin:4.0.0'
+	}
+}
+import org.apache.tools.ant.filters.ReplaceTokens
+apply plugin: 'nebula.ospackage'
+
+def rpmName = 'CO-MicroServices-connections'
+def releaseVersion = '1.0'
+def timestamp = new Date().format('yyyyMMdd.HHmmss')
+def intranetCredentials = project.getProperties()['intranetCredentials']
+
+ospackage {
+	packageName = rpmName
+	version = releaseVersion
+	release = timestamp
+	arch = 'x86_64'
+	os = LINUX
+	into '/var/microservices'
+	from('microservices')
+}
+
+task publishArtifacts(dependsOn: 'buildRpm') {
+	doLast {
+		project.exec {
+			commandLine = ['curl', '--user', intranetCredentials, '--data-binary' , "@build/distributions/${rpmName}-${releaseVersion}-${timestamp}.x86_64.rpm", '-X', 'PUT', "https://na.artifactory.swg-devops.com/artifactory/cloud_operations-yum/${rpmName}-${releaseVersion}-${timestamp}.x86_64.rpm"]
+		}
+	}
+}

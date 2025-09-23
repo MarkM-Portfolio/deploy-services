@@ -1,0 +1,24 @@
+#! /bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+if [ "`/usr/bin/id -u`" != 0 ]; then
+	exec sudo $0 "$@"
+fi
+
+export ETCD_CERT_FILE=/etc/cfc/conf/etcd/client.pem
+export ETCD_CA_CERT_FILE=/etc/cfc/conf/etcd/ca.pem
+export ETCD_KEY_FILE=/etc/cfc/conf/etcd/client-key.pem
+export ETCD_ENDPOINTS=https://master.cfc:4001
+
+ICP_CONFIG_DIR=/opt/ibm/connections
+ICP_CONFIG_FILE=config.json
+jq=${ICP_CONFIG_DIR}/jq/bin/jq
+
+conn_locn=$(cat $ICP_CONFIG_DIR/$ICP_CONFIG_FILE | $jq -r '.connections_location')
+RUNTIME_BINS=${conn_locn}/runtime
+
+exec ${RUNTIME_BINS}/calicoctl/bin/calicoctl "$@"
+

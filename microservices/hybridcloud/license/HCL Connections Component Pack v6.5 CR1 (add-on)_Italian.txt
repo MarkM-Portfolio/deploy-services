@@ -1,0 +1,34 @@
+﻿INFORMAZIONI SULLA LICENZA 
+
+Nome del Programma (numero del Programma): 
+HCL Connections Component Pack v6.5 CR1 (funzione aggiuntiva)
+
+I seguenti termini standard si applicano all'utilizzo del Programma da parte del Licenziatario. 
+
+Diritto di utilizzo limitato 
+
+Come descritto nell'Accordo quadro di licenza e nelle presenti Informazioni sulla licenza, HCL concede al Licenziatario un diritto limitato di utilizzo del Programma. Il presente diritto è limitato al livello di Utilizzo autorizzato, quale un'unità di valore del processore (Processor Value Unit o "PVU"), un'unità di valore delle risorse (Resource Value Unit o "RVU"), un'unità di valore (Value Unit o "VU") o altro livello di utilizzo specificato, pagato dal Licenziatario come dimostrato nella Prova di titolarità. L'utilizzo del Licenziatario può anche essere limitato a una macchina specifica, o solo come un Programma di supporto, o subordinatamente ad altre restrizioni. In quanto il Licenziatario non ha pagato tutto il valore economico del Programma, nessun altro utilizzo è consentito senza il pagamento di costi aggiuntivi. Inoltre, il Licenziatario non è autorizzato a utilizzare il Programma per fornire servizi IT commerciali a terzi, per fornire hosting o timesharing commerciale, o per sublicenziare, affittare o noleggiare il Programma, a meno che non sia espressamente previsto negli accordi applicabili in base ai quali il Licenziatario ottiene le autorizzazioni all'utilizzo del Programma. Diritti aggiuntivi possono essere a disposizione del Licenziatario subordinatamente al pagamento di costi aggiuntivi o in base a termini diversi o supplementari. HCL si riserva il diritto di decidere se rendere tali diritti aggiuntivi a disposizione del Licenziatario. 
+
+Specifiche 
+
+Le specifiche del Programma si trovano nelle sezioni collettive "Descrizione e informazioni tecniche" delle Lettere d'annuncio del Programma. 
+
+Utilizzi proibiti 
+
+Il Licenziatario non può utilizzare o autorizzare altri a utilizzare il Programma se il mancato funzionamento del Programma può causare morte, lesioni fisiche, danni materiali o ambientali. 
+
+Programma a utilizzo limitato 
+
+Il presente Programma è fornito solo per l'utilizzo con i Programmi e/o Servizi denominati indicati di seguito o con le loro versioni successive. Al Licenziatario è proibito utilizzare il presente Programma in associazione con qualsiasi altro software o servizio. 
+
+Programmi e/o Servizi denominati: 
+
+HCL Connections 6.5
+IBM Connections 6.0 Interim Feature Release 1
+IBM Connections 6.0 
+
+In aggiunta a quanto sopra, i seguenti termini si applicano all'utilizzo del Programma da parte del Licenziatario. 
+
+La prova di titolarità al Programma del Licenziatario è il presente documento di Informazioni sulla licenza. Non sono necessari ulteriori titolarità per l'utilizzo del Programma. 
+
+

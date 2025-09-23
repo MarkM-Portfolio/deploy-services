@@ -1,0 +1,14 @@
+env:
+  set_ic_admin_user: wasadmin
+  set_ic_admin_password: password
+  set_ic_internal: connections1.internal.cnx-dev.net
+  set_master_ip: web1.internal.cnx-dev.net
+  set_elasticsearch_ca_password: password
+  set_elasticsearch_key_password: password
+  set_redis_secret: password
+  set_search_secret: password
+  set_solr_secret: password
+  skip_configure_redis: false
+image:
+  repository: cp1.internal.cnx-dev.net:5000/connections
+replicaCount: 3

@@ -1,0 +1,47 @@
+{
+    "name": "Connections Custom Style",
+    "title": "Connections Custom Style",
+    "description": "Connections 8 style customization - Example",
+    "services": [
+        "Connections"
+    ],
+    "state": "enabled",
+    "extensions": [
+        {
+            "name": "connections-custom-style-fiesta",
+            "type": "com.hcl.connections.custom.style",
+            "payload": {
+                "style-customization": {
+                    "generic": {
+                        "--color-header": "#015843",
+                        "--color-navigation": "#015843",
+                        "--color-footer": "#015843",
+                        "--color-itmbar": "#015843",
+                        "--color-admin-banner-success": "#0bdaa8"
+                    },
+                    "top-navigation": {
+                        "logo": {
+                            "position": "left",
+                            "order": "1"
+                        },
+                        "search": {
+                            "position": "left",
+                            "order": "2"
+                        },
+                        "text": {
+                            "position": "right",
+                            "content": "Test Environment"
+                        },
+                        "actions": {
+                            "position": "left",
+                            "order": "3"
+                        }
+                    }
+                },
+                "cacheExpiration": 20000
+            },
+            "path": "global",
+            "state": "enabled"
+        }
+    ]
+}

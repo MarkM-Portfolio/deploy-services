@@ -1,0 +1,596 @@
+global:
+  image:
+    repository: null
+  onPrem: null
+  mt:
+    orient_cnx_use_rel_path: "false"
+    use_request_host_for_cnx: "false"
+ 
+itm-services :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  containers:
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: false
+      runAsNonRoot: true
+      runAsUser: 1000
+  deploymentType: ''
+  env:
+    configMapKeyRef:
+      name: connections-env
+    validateTokenMatch: 'true'
+  git_commit: 2b373421583acc8264816ce93c86dcb4148cad99
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    pullSecrets: myregkey
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: itm-services
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '1'
+        memory: 500Mi
+      requests:
+        cpu: '0.1'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+  service:
+    port        : 3000
+    externalPort: 3000
+    internalPort: 3000
+    name: itm-services
+#    type: NodePort
+  timestamp: 20201118-013452
+orient-web-client :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  deploymentType: ''
+  env:
+    JenkinsBuildID: ''
+    configMapKeyRef:
+      name: connections-env
+    validateTokenMatch: 'true'
+  git_commit: b2b28f91daf2bfd7e0358206e4c6cc81dc2dd644
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '1'
+        memory: 1Gi
+      requests:
+        cpu: '0.1'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '2'
+        memory: 3Gi
+      requests:
+        cpu: '1'
+        memory: 2Gi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    port: 8000
+    externalPort: 8000
+    internalPort: 8000
+#    type: NodePort
+  serviceHostname: orientme
+  tester:
+    testerTag: tester
+  timestamp: 20210115-073543
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    enabled: true
+    hosts:
+    - host: test.example.com
+      paths: []
+    name: cnx-ingress-orient-me
+    tls: []
+orient-analysis-service :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  deployment:
+    logLevel: INFO
+    maxHeap: 700m
+    minHeap: 700m
+  gatekeeper:
+    third_party_events: true
+  git_commit: 6401d8a3b83462d3f5bec80bea6e65aa97991e87
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 300
+    periodSeconds: 60
+    timeoutSeconds: 10
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 45
+    periodSeconds: 10
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    externalPort: 9103
+    internalPort: 9103
+  tester:
+    limits:
+      cpu: '0.5'
+      memory: 100Mi
+    requests:
+      cpu: '0.01'
+      memory: 50Mi
+  timestamp: 20201117-224045
+orient-indexing-service :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  deployment:
+    clientCertName: ca-keyAndCert.pem
+    configMapKeyRefName: connections-env
+    logLevel: INFO
+    maxHeap: 700m
+    minHeap: 700m
+  elasticsearch:
+    certFileName: elasticsearch-orientme.p12
+    certPassFileName: elasticsearch-key-password.txt
+    certsRoot: /usr/local/etc/elasticsearch
+    host: elasticsearch
+    port: 9200
+    secretKeyRefName: elasticsearch-secret
+  elasticsearch7:
+    certFileName: elasticsearch-orientme.p12
+    certPassFileName: elasticsearch-key-password.txt
+    certsRoot: /usr/local/etc/elasticsearch-7
+    host: elasticsearch7
+    port: 9200
+    secretKeyRefName: elasticsearch-7-secret
+  gatekeeper:
+    event_debug: false
+    third_party_events: true
+  git_commit: 5b753ad3e200e62d5c8fe5edb0b49a8807f04f80
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  indexing:
+    elasticsearch7: true
+  livenessProbe:
+    initialDelaySeconds: 350
+    periodSeconds: 60
+    timeoutSeconds: 10
+  namespace: connections
+  readinessProbe:
+    failureThreshold: 10
+    initialDelaySeconds: 300
+    periodSeconds: 60
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 100Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    externalPort: 9101
+    internalPort: 9101
+  tester:
+    limits:
+      cpu: 500m
+      memory: 100Mi
+    requests:
+      cpu: 100m
+      memory: 50Mi
+  timestamp: 20201117-225054
+middleware-graphql :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    configMapKeyRef:
+      name: connections-env
+    logLevel: info
+    validateTokenMatch: 'true'
+  git_commit: 1a7c357b86b47e1884989b9ef732d03d9b928ea8
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: middleware-graphql
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '1'
+        memory: 500Mi
+      requests:
+        cpu: '0.1'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    port        : 3000
+    externalPort: 3000
+    internalPort: 3000
+    name: middleware-graphql
+#    type: NodePort
+  tester:
+    testerTag: tester
+  timestamp: 20210115-073443
+orient-retrieval-service :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  deployment:
+    logLevel: INFO
+    maxHeap: 700m
+    minHeap: 700m
+  elasticsearch:
+    certFileName: elasticsearch-orientme.p12
+    certPassFileName: elasticsearch-key-password.txt
+    certsRoot: /usr/local/etc/elasticsearch
+    host: elasticsearch
+    port: 9200
+    secretKeyRef: elasticsearch-secret
+  elasticsearch7:
+    certFileName: elasticsearch-orientme.p12
+    certPassFileName: elasticsearch-key-password.txt
+    certsRoot: /usr/local/etc/elasticsearch7
+    host: elasticsearch7
+    port: 9200
+    secretKeyRef: elasticsearch-7-secret
+  git_commit: 4e5ba51be6aa58ba6b7acde18579a20cd511f59f
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 400
+    periodSeconds: 60
+    timeoutSeconds: 10
+  namespace: connections
+  readinessProbe:
+    failureThreshold: 10
+    initialDelaySeconds: 300
+    periodSeconds: 60
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 100Mi
+  retrieval:
+    elasticsearch7: true
+    esStacksSizeLimit: 3000
+    esStacksSizeLimit7: 3000
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    externalPort: 9102
+    internalPort: 9102
+  tester:
+    limits:
+      cpu: '0.5'
+      memory: 100Mi
+    requests:
+      cpu: '0.01'
+      memory: 50Mi
+  timestamp: 20201117-230403
+people-scoring :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    log_level: info
+  git_commit: 43bf9f3c360f07cf8c0e38fdb56788d140b53379
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: people-scoring
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 1500Mi
+      nodeJSHeapMemory: 1500
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 100Mi
+      requests:
+        cpu: '0.01'
+        memory: 50Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  securityContext:
+    runAsUser: 1000
+  service:
+    name: people-scoring
+#    type: NodePort
+  timestamp: 20201118-051510
+people-datamigration :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  git_commit: d6ca2078939eeb880fd6fbcb93a457441dcd380c
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  migrate:
+    command: scripts/migrate.sh
+    commandParameter:
+    - run start report,run start migrate,run start report
+    maxConcurrentUser: '50'
+    maxReqPerMin: '20000'
+  name: people-migrate
+  namespace: connections
+  replicaCount: 1
+  resources:
+    service:
+      limits:
+        cpu: '1'
+        memory: 1000Mi
+      requests:
+        cpu: '0.1'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 100Mi
+      requests:
+        cpu: '0.01'
+        memory: 50Mi
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+  securityContext:
+    runAsUser: 1000
+  service:
+    name: people-migrate
+#    type: NodePort
+  timestamp: 20201118-041847
+people-relationship :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    log_level: info
+  git_commit: 0b3eed1ac056f9a0f73b33de1bdbd25f9eecbdeb
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: people-relation
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      nodeJSHeapMemory: 1500
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 100Mi
+      requests:
+        cpu: '0.01'
+        memory: 50Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  securityContext:
+    runAsUser: 1000
+  service:
+    name: people-relation
+#    type: NodePort
+  timestamp: 20201118-050028
+people-idmapping :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  git_commit: 7a55877a8576e10a067be1a013200ee2c2829b64
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: people-idmapping
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    log_level: info
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      nodeJSHeapMemory: 1500
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 100Mi
+      requests:
+        cpu: '0.01'
+        memory: 50Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  securityContext:
+    runAsUser: 1000
+  service:
+    name: people-idmapping
+#    type: NodePort
+  timestamp: 20201118-043123
+community-suggestions :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  deploymentType: ''
+  env:
+    configMapKeyRef:
+      name: connections-env
+    logLevel: info
+    validateTokenMatch: 'true'
+  git_commit: e328ed4888447ba541b1ea4b180d8b98b50a7962
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 10
+  name: community-suggestions
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    port        : 3000
+    externalPort: 3000
+    internalPort: 3000
+    name: community-suggestions
+    scheme: HTTP
+#    type: NodePort
+  serviceAnnotation: 'service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0'
+  timestamp: 20201118-001400

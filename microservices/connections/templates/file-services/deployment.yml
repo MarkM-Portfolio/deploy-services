@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: file-services
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: file-services
+    spec:
+      containers:
+      - name: file-services
+        image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/file-services
+        env:
+          - name: GITHUB_URL
+            value: git@github.ibm.com:XPCOIN/middleware-proxy-customizations
+        ports:
+        - containerPort: 3001
+      imagePullSecrets:
+      - name: myregkey

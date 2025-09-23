@@ -1,0 +1,174 @@
+global:
+  image:
+    repository: null
+  onPrem: null
+ 
+te-creation-wizard :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    configMapKeyRef:
+      name: connections-env
+  environment_name: production
+  git_commit: 03dada2c5dd760ff5c18a4ab137ba53647b0bc36
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  maxReplicas: 3
+  minReplicas: 1
+  name: te-creation-wizard
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    port        : 8080
+    externalPort: 8080
+    internalPort: 8080
+    name: te-creation-wizard
+    scheme: HTTP
+#    type: NodePort
+  timestamp: 20210120-191840
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/proxy-body-size: 20m
+    enabled: true
+    hosts:
+    - host: test.example.com
+      paths: []
+    name: cnx-ingress-tailored-exp
+    tls: []
+community-template-service :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    configMapKeyRef:
+      name: connections-env
+  git_commit: 42cf996f3e9e2f8685d6f8d19b4de28455bfb96d
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  maxReplicas: 3
+  minReplicas: 1
+  name: community-template-service
+  namespace: connections
+  port_name: community-tpl
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 1
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    externalPort: 3000
+    internalPort: 3000
+    name: community-template-service
+    scheme: HTTP
+#    type: NodePort
+  timestamp: 20201202-121836
+admin-portal :
+  container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+  env:
+    configMapKeyRef:
+      name: connections-env
+  environment_name: production
+  git_commit: 6dd667c7a7a7ad73035449a64747b480de229710
+  global:
+    onPrem: null
+  image:
+    pullPolicy: IfNotPresent
+    repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  imagePullSecrets:
+    name: myregkey
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  maxReplicas: 3
+  minReplicas: 1
+  name: admin-portal
+  namespace: connections
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+  replicaCount: 3
+  resources:
+    service:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+    tester:
+      limits:
+        cpu: '0.5'
+        memory: 400Mi
+      requests:
+        cpu: '0.05'
+        memory: 75Mi
+  rollingUpdate:
+    maxSurge: 2
+    maxUnavailable: 1
+  service:
+    port        : 8080
+    externalPort: 8080
+    internalPort: 8080
+    name: admin-portal
+    scheme: HTTP
+#    type: NodePort
+  timestamp: 20210118-072841

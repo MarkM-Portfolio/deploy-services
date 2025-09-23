@@ -1,0 +1,32 @@
+﻿INFORMACIÓN SOBRE LA LICENCIA
+
+Nombre del Programa (número de programa):
+Component Pack v6.5 CR1 (complemento) para HCL Connections
+
+Los siguientes términos estándar se aplican al uso del Programa por parte del Licenciatario.
+
+Derecho de uso limitado
+
+Como se describe en el Acuerdo principal de licencia y en esta Información sobre la licencia, HCL otorga al Licenciatario un derecho limitado a utilizar el Programa. Este derecho se limita al nivel de Uso autorizado, como una Unidad de valor de procesador ("PVU"), una Unidad de valor de recurso ("RVU"), una Unidad de valor ("VU") u otro nivel de uso especificado, abonado por el Licenciatario según evidencia el Justificante de titularidad. El uso del Licenciatario también puede estar limitado a una máquina específica, o solo como Programa de soporte, o estar sujeto a otras limitaciones. Dado que el Licenciatario no ha adquirido todo el valor económico del Programa, no se permite ningún otro uso sin el pago de tarifas adicionales. Además, el Licenciatario no está autorizado a utilizar el Programa para proporcionar servicios comerciales de TI a terceros, proporcionar alojamiento comercial o tiempo compartido, o sublicenciar, alquilar o arrendar el Programa, salvo que esté expresamente previsto en los acuerdos aplicables en virtud de los cuales el Licenciatario ha obtenido las autorizaciones para utilizar el Programa. Puede haber derechos adicionales disponibles para el Licenciatario sujetos al pago de tarifas adicionales o bajo términos diferentes o complementarios. HCL se reserva el derecho a determinar si están disponibles esos derechos adicionales para el Licenciatario.
+
+Especificaciones
+
+Las especificaciones del Programa se encuentran en las secciones colectivas de Descripción e Información técnica de las Cartas de anuncio del Programa.
+
+Usos prohibidos
+
+El Licenciatario no puede utilizar ni autorizar a otros para que utilicen el Programa, en caso de que un fallo del mismo pueda provocar la muerte, lesiones corporales o daños a la propiedad o al medioambiente.
+
+Programa de uso limitado
+
+Este Programa se suministra exclusivamente para su uso con el o los Programas o Servicios indicados que se identifican a continuación o con sus sucesores. El Licenciatario tiene prohibido el uso de este Programa en conexión con cualquier otro software o servicio.
+
+Programa(s) o Servicio(s) indicado(s):
+
+HCL Connections 6.5
+IBM Connections 6.0 Interim Feature Release 1
+IBM Connections 6.0
+
+Además de los anteriores, los siguientes términos se aplican al uso del Programa por parte del Licenciatario.
+
+El Justificante de titularidad del Licenciatario del Programa es este documento de Información sobre la licencia. No se requiere ninguna otra titularidad para utilizar el Programa.

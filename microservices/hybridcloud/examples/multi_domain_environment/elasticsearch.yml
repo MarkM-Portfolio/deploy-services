@@ -1,0 +1,4 @@
+image:
+  repository: cp1.internal.cnx-dev.net:5000/connections
+nodeAffinityRequired: true
+createSecret: false

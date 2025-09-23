@@ -1,0 +1,127 @@
+{
+    "name": "ITM Web Meeting extension",
+    "title": "ITM Web Meeting extension",
+    "description": "ITM Web Meeting extension",
+    "services": [
+        "ImportantToMe"
+    ],
+    "state": "enabled",
+    "extensions": [
+        {
+            "name": "ITM Web Meeting extension",
+            "description": "Enable webmeeting from ITM bubbles",
+            "translations": {
+                "": {
+                    "ImportantToMeWebMeetingIntegration.label": "Join Meeting"
+                },
+                "en": {
+                    "ImportantToMeWebMeetingIntegration.label": "Join Meeting"
+                },
+                "ca": {
+                    "ImportantToMeWebMeetingIntegration.label": "Uniu-vos a la reunió"
+                },
+                "cs": {
+                    "ImportantToMeWebMeetingIntegration.label": "Připojit se ke schůzce"
+                },
+                "da": {
+                    "ImportantToMeWebMeetingIntegration.label": "Deltag i mødet"
+                },
+                "de": {
+                    "ImportantToMeWebMeetingIntegration.label": "Am Meeting teilnehmen"
+                },
+                "fi": {
+                    "ImportantToMeWebMeetingIntegration.label": "Liity kokoukseen"
+                },
+                "fr": {
+                    "ImportantToMeWebMeetingIntegration.label": "Rejoindre une réunion"
+                },
+                "he": {
+                    "ImportantToMeWebMeetingIntegration.label": "הצטרפות לפגישה"
+                },
+                "hr": {
+                    "ImportantToMeWebMeetingIntegration.label": "Pridruži se sastanku"
+                },
+                "hu": {
+                    "ImportantToMeWebMeetingIntegration.label": "Csatlakozás a találkozóhoz"
+                },
+                "it": {
+                    "ImportantToMeWebMeetingIntegration.label": "Partecipa alla riunione"
+                },
+                "ja": {
+                    "ImportantToMeWebMeetingIntegration.label": "ミーティングに参加"
+                },
+                "ko": {
+                    "ImportantToMeWebMeetingIntegration.label": "미팅 참여"
+                },
+                "no": {
+                    "ImportantToMeWebMeetingIntegration.label": "Bli med på møtet"
+                },
+                "pl": {
+                    "ImportantToMeWebMeetingIntegration.label": "Dołącz do spotkania"
+                },
+                "pt": {
+                    "ImportantToMeWebMeetingIntegration.label": "Participar na reunião"
+                },
+                "ru": {
+                    "ImportantToMeWebMeetingIntegration.label": "Присоединиться к собранию"
+                },
+                "sk": {
+                    "ImportantToMeWebMeetingIntegration.label": "Pripojiť sa ku schôdzi"
+                },
+                "sl": {
+                    "ImportantToMeWebMeetingIntegration.label": "Pridružite se srečanju"
+                },
+                "sv": {
+                    "ImportantToMeWebMeetingIntegration.label": "Gå med i möte"
+                },
+                "th": {
+                    "ImportantToMeWebMeetingIntegration.label": "เข้าร่วมการประชุม"
+                },
+                "tr": {
+                    "ImportantToMeWebMeetingIntegration.label": "Toplantıya Katıl"
+                },
+                "zh": {
+                    "ImportantToMeWebMeetingIntegration.label": "加入会议"
+                },
+                "pt-BR": {
+                    "ImportantToMeWebMeetingIntegration.label": "Participar da reunião"
+                },
+                "zh-TW": {
+                    "ImportantToMeWebMeetingIntegration.label": "加入會議"
+                },
+                "nl": {
+                    "ImportantToMeWebMeetingIntegration.label": "Deelnemen aan vergadering"
+                },
+                "ro": {
+                    "ImportantToMeWebMeetingIntegration.label": "Participați la întrunire"
+                },
+                "bg": {
+                    "ImportantToMeWebMeetingIntegration.label": "Присъединяване към събрание"
+                },
+                "es": {
+                    "ImportantToMeWebMeetingIntegration.label": "Unirse a la reunión"
+                },
+                "ar": {
+                    "ImportantToMeWebMeetingIntegration.label": "الانضمام إلى الاجتماع"
+                }
+            },
+            "type": "com.ibm.itm.entry.person.default",
+            "payload": {
+                "actions": [
+                    {
+                        "type": "webmeeting",
+                        "label": "%nls:ImportantToMeWebMeetingIntegration.label",
+                        "icon": {
+                            "type": "svg",
+                            "data": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjhweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjggMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8dGl0bGU+bWVldGluZzwvdGl0bGU+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0ibWVldGluZyIgZmlsbD0iIzQxNzhCRSIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgICAgICAgPHBhdGggZD0iTTI3LjUsMi4xMyBDMjcuMTkwNTk4OSwxLjk1MTM2NzIxIDI2LjgwOTQwMTEsMS45NTEzNjcyMSAyNi41LDIuMTMgTDIxLDUuMjggTDIxLDIgQzIxLDAuODk1NDMwNSAyMC4xMDQ1Njk1LDAgMTksMCBMMiwwIEMwLjg5NTQzMDUsMCAwLDAuODk1NDMwNSAwLDIgTDAsMTggQzAsMTkuMTA0NTY5NSAwLjg5NTQzMDUsMjAgMiwyMCBMMTksMjAgQzIwLjEwNDU2OTUsMjAgMjEsMTkuMTA0NTY5NSAyMSwxOCBMMjEsMTQuNzMgTDI2LjUsMTcuOSBDMjYuODA5NDAxMSwxOC4wNzg2MzI4IDI3LjE5MDU5ODksMTguMDc4NjMyOCAyNy41LDE3LjkgQzI3LjgyMDE2MTQsMTcuNzE1NDMzNyAyOC4wMTI0MzQ2LDE3LjM2OTM0MTkgMjgsMTcgTDI4LDMgQzI4LjAwMTQyNCwyLjY0MTMxNTI0IDI3LjgxMDYzNDIsMi4zMDkzNDA5NyAyNy41LDIuMTMgWiBNMjYsMTUuMzEgTDIwLjUsMTIuMTQgQzIwLjE5MDU5ODksMTEuOTYxMzY3MiAxOS44MDk0MDExLDExLjk2MTM2NzIgMTkuNSwxMi4xNCBDMTkuMTkyNDU1NSwxMi4zMTc1NTIzIDE5LjAwMjE0MzUsMTIuNjQ0ODg4OSAxOSwxMyBMMTksMTggTDIsMTggTDIsMiBMMTksMiBMMTksNyBDMTguOTk4NTc1NSw3LjM1Nzk3NTMgMTkuMTg4NjExNyw3LjY4OTQwNjI1IDE5LjQ5ODI3NCw3Ljg2OTAxMDM2IEMxOS44MDc5MzYyLDguMDQ4NjE0NDYgMjAuMTg5OTgzNSw4LjA0ODk5MTkgMjAuNSw3Ljg3IEwyNiw0LjcyIEwyNiwxNS4zMSBaIiBpZD0icGF0aC0xIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
+                        },
+                        "url": "https://meetings.hcltechsw.com/${meetingIdentity}",
+                        "enabled": true
+                    }
+                ]
+            },
+            "path": "OrientMe",
+            "state": "enabled"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+global:
+  onPrem: true
+  image: 
+    repository: cp1.internal.cnx-dev.net:5000/connections
+orient-web-client:
+  service:
+    nodePort: 32200
+orient-indexing-service:
+  indexing:
+    solr: false
+    elasticsearch7: true
+orient-retrieval-service:
+  retrieval:
+    elasticsearch7: true
+deploymentType: hybrid_cloud
+replicaCount: 3

@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      name: redis
+      labels:
+        name: redis        
+        role: master    
+    spec:
+      containers:
+        - name: master
+          image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/redis
+          env:
+            - name: MASTER
+              value: "true"
+          ports:
+            - containerPort: 6379  
+      imagePullSecrets:
+        - name: myregkey

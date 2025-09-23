@@ -1,0 +1,235 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo-connections-persistent-storage-mongo-0
+spec:
+ capacity:
+   storage: 8Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: mongo-persistent-storage-mongo-0
+ hostPath:
+   path: /pv-connections/mongo-node-0/data/db
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo-connections-persistent-storage-mongo-1
+spec:
+ capacity:
+   storage: 8Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: mongo-persistent-storage-mongo-1
+ hostPath:
+   path: /pv-connections/mongo-node-1/data/db
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo-connections-persistent-storage-mongo-2
+spec:
+ capacity:
+   storage: 8Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: mongo-persistent-storage-mongo-2
+ hostPath:
+   path: /pv-connections/mongo-node-2/data/db
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: solr-pv-0
+spec:
+ capacity:
+   storage: 10Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: solr-data-pvc-solr-0
+ hostPath:
+   path: /pv-connections/solr-data-solr-0
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: solr-pv-1
+spec:
+ capacity:
+   storage: 10Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: solr-data-pvc-solr-1
+ hostPath:
+   path: /pv-connections/solr-data-solr-1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: solr-pv-2
+spec:
+ capacity:
+   storage: 10Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: solr-data-pvc-solr-2
+ hostPath:
+   path: /pv-connections/solr-data-solr-2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: zookeeper-pv-0
+spec:
+ capacity:
+   storage: 2Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: zookeeper-data-pvc-zookeeper-0
+ hostPath:
+   path: /pv-connections/zookeeper-data-zookeeper-0
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: zookeeper-pv-1
+spec:
+ capacity:
+   storage: 2Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: zookeeper-data-pvc-zookeeper-1
+ hostPath:
+   path: /pv-connections/zookeeper-data-zookeeper-1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: zookeeper-pv-2
+spec:
+ capacity:
+   storage: 2Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: connections
+   name: zookeeper-data-pvc-zookeeper-2
+ hostPath:
+   path: /pv-connections/zookeeper-data-zookeeper-2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: connections
+  name: es-pv-backup
+  labels:
+    component: elasticsearch
+    role: es-pv-backup
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: anything
+  claimRef:
+    namespace: connections
+    name: es-pvc-backup
+  hostPath:
+    path: /pv-connections/esbackup
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: connections
+  name: es-data-0
+  labels:
+    component: elasticsearch
+    role: es-data-0
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: anything
+  hostPath:
+    path: /pv-connections/esdata-0
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: connections
+  name: es-data-1
+  labels:
+    component: elasticsearch
+    role: es-data-1
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: anything
+  hostPath:
+    path: /pv-connections/esdata-1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: connections
+  name: es-data-2
+  labels:
+    component: elasticsearch
+    role: es-data-2
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: anything
+  hostPath:
+    path: /pv-connections/esdata-2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: connections
+  name: customervolume
+  labels:
+    app: customizervolumeapp
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /pv-connections/customizations
+---

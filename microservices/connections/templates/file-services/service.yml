@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: file-services
+  namespace: default
+  labels:
+    app: file-services
+    type: service
+    hostname: file-services-webhook
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:905409959051:certificate/721971e3-3d1f-41c2-9fff-c9127ca60bbd"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout: "300"
+spec:
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 3001
+    - name: tcp
+      protocol: TCP
+      port: 3001
+      targetPort: 3001
+  type: LoadBalancer
+  selector:
+    app: file-services

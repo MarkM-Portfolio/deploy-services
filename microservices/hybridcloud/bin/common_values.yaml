@@ -1,0 +1,10 @@
+createSecret: false
+image:
+  repository: master.cfc:8500/connections
+namespace: connections
+deploymentType: hybrid_cloud
+ic:
+  host: ichostdetails
+  internal: icinternaldetails
+onPrem: true
+servicesToCheck: 

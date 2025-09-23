@@ -1,0 +1,346 @@
+BuildDefinition = env.JOB_BASE_NAME
+build_ok = true
+
+// We want Jenkinsfile to be flexible to build any repo, but want to also not need to enter a ton of parameters/properties
+// Users can override the GitHub repository to build by setting an environment variable named "custom_git_repo"
+
+env.repos = 'deploy-services'
+env.buildNodeExpression = 'Publish_Kudosboards'
+
+setEnvironmentVariablesStageDescription = "Setting Environment Variables"
+getBuildCausesStageDescription = "Getting Build Causes"
+setBuildParametersAndPropertiesStageDescription = "Setting Build Parameters & Properties"
+setAdditionalEnvironmentSettingsStageDescription = "Setting Additional Environment Settings"
+printEnvironmentVariablesStageDescription = "Printing Environment Variables"
+buildStageDescription = "Publishing kudosboards " + BuildDefinition
+createJobResultSummaryStageDescription = "Creating Job Result Summary"
+
+// buildNodeExpression is a parameter of the job, defined below
+buildNodeExpression = env.buildNodeExpression
+
+// Set job's workspace
+if ( env.ws ) {
+    ws = env.ws
+} else {
+    ws = "/local1/cnxbuild/Publish_Kudosboards"
+}
+
+node(buildNodeExpression) {
+
+    ws("${ws}") {
+        // 1) Set environment variables
+        stage("${setEnvironmentVariablesStageDescription}") {
+            setEnvironmentVariables()
+        }
+
+        // 2) Get build causes
+        stage("${getBuildCausesStageDescription}") {
+            getBuildCauses()
+        }
+
+        // 3) Set build parameters
+        stage("${setBuildParametersAndPropertiesStageDescription}") {
+            setBuildParametersAndProperties()
+        }
+
+        // 4) Checkout source
+        stage("${checkoutAndSetupStageDescription}") {
+            checkoutAndSetup()
+        }
+
+        // 5) Print Environment Variables
+        stage("${printEnvironmentVariablesStageDescription}") {
+            printEnvironmentVariables()
+        }
+
+        // 6) Build
+        stage("${buildStageDescription}") {
+            try {
+                buildStage()
+            } catch(e) {
+                build_ok = false
+                env.build_ok = false
+                echo e.toString()
+            }
+        }
+
+        // 7) Create Summary
+        stage("${createJobResultSummaryStageDescription}") {
+            createSummary()
+        }
+
+    }
+}
+
+//**********************************************************************************************
+//
+// Functions
+//
+//**********************************************************************************************
+
+void setEnvironmentVariables() {
+
+    // The following used to create build label
+    now = new Date()
+    TimeStamp = now.format("yyyyMMdd-HHmm", TimeZone.getTimeZone('America/New_York'))
+    currentBuild.displayName = BuildDefinition + "_" + TimeStamp
+    currentBuild.description = ""
+    env.BUILD_TIMESTAMP = TimeStamp
+
+    // env.repos at the top of this Jenkinsfile is used to determine which repo's to pull
+    if (env.custom_git_repo) {
+        allRepos = env.custom_git_repo
+    } else {
+        allRepos = env.repos
+        env.repos = repos
+    }
+
+    //allRepos = env.repos
+    repoList = allRepos.split(",")
+
+    if (env.gitURL) {
+        gitURL = env.gitURL
+    } else {
+        gitURL = 'https://git.cwp.pnp-hcl.com/connections/'
+        env.gitURL = gitURL
+    }
+
+    if (env.githubCredId) {
+        githubCredId = env.githubCredId
+    } else {
+        githubCredId = 'connbld_github_api_token'
+        env.githubCredId = githubCredId
+    }
+
+}
+
+void getBuildCauses() {
+
+    causes = currentBuild.getBuildCauses()
+    echo "causes = ${causes}"
+    if (causes) {
+        env.BUILD_CAUSE = causes
+    }
+
+}
+
+void setBuildParametersAndProperties() {
+
+    properties([
+        parameters([
+            string(
+                defaultValue: 'master',
+                description: '<BR><font color="blue" size="4">Git branch (default: master)<BR><BR></font>',
+                name: 'branchName'
+            ),
+            string(
+                defaultValue: 'connections-docker',
+                description: '<BR><font color="blue" size="4">connections-docker or connections-docker-prod<BR><BR></font>',
+                name: 'artifactory_docker'
+            ),
+            string(
+                defaultValue: 'connections-helm',
+                description: '<BR><font color="blue" size="4">connections-helm or connections-helm-prod<BR><BR></font>',
+                name: 'artifactory_helm'
+            )
+        ]),
+
+        buildDiscarder(logRotator(
+            //artifactDaysToKeepStr: '7',
+            artifactNumToKeepStr: '25',
+            //daysToKeepStr: '7',
+            numToKeepStr: '25')
+        )
+    ])
+
+    if (( "${params.branchName}" ) && ("${params.branchName}" != null )) {
+        branchName = "${params.branchName}"
+    } else {
+        branchName = "master"
+    }
+    env.branchName = branchName
+    env.artifactory_docker = artifactory_docker
+    env.artifactory_helm = artifactory_helm
+
+    checkoutAndSetupStageDescription = "Retrieve Source\n" + allRepos.take(20) + ":" + branchName
+
+}
+
+void checkoutAndSetup() {
+    deleteDir()
+    env.nullString = "null"
+
+    if (repoList.size() > 1) {
+        for (String repoName : repoList) {
+            dir("${repoName}") {
+            repoURL = gitURL + repoName
+                mapVars = checkout([
+                    $class: 'GitSCM',
+                    branches: [[
+                          name: branchName
+                    ]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[
+                        credentialsId: "${githubCredId}",
+                        url: "${repoURL}"
+                    ]]
+                ])
+
+                env.GIT_COMMIT = mapVars.get('GIT_COMMIT')
+                env.GIT_PREVIOUS_COMMIT = mapVars.get('GIT_PREVIOUS_COMMIT')
+                env.GIT_PREVIOUS_SUCCESSFUL_COMMIT = mapVars.get('GIT_PREVIOUS_SUCCESSFUL_COMMIT')
+                env.repoSha = BuildDefinition + "_" + TimeStamp + "," + env.GIT_COMMIT + "," + repoName + "," + branchName
+                env.justSha = env.GIT_COMMIT + "," +  env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+
+                if (isUnix()) {
+                    sh """
+                        echo ${env.repoSha} >> ../GIT_COMMIT_SHA.txt
+                        echo ${env.justSha} >> ../GIT_JUST_SHA.txt
+                        if [[ "${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}" == "${env.nullString}" ]]; then
+                            echo "New repo" >> list_of_changes.txt
+                        else
+                            git diff --name-only ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} ${env.GIT_COMMIT} >> ../list_of_changes.txt
+                        fi
+                    """
+                }
+            }
+        }
+    } else {
+        for (String repoName : repoList) {
+            repoURL = gitURL + repoName
+            mapVars = checkout([
+                $class: 'GitSCM',
+                branches: [[
+                      name: branchName
+                ]],
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [],
+                submoduleCfg: [],
+                userRemoteConfigs: [[
+                    credentialsId: "${githubCredId}",
+                    url: "${repoURL}"
+                ]]
+            ])
+
+            env.GIT_COMMIT = mapVars.get('GIT_COMMIT')
+            env.GIT_PREVIOUS_COMMIT = mapVars.get('GIT_PREVIOUS_COMMIT')
+            env.GIT_PREVIOUS_SUCCESSFUL_COMMIT = mapVars.get('GIT_PREVIOUS_SUCCESSFUL_COMMIT')
+            env.repoSha = BuildDefinition + "_" + TimeStamp + "," + env.GIT_COMMIT + "," + repoName + "," + branchName
+            env.justSha = env.GIT_COMMIT + "," +  env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+
+            if (isUnix()) {
+                sh """
+                    echo ${env.repoSha} >> GIT_COMMIT_SHA.txt
+                    echo ${env.justSha} >> GIT_JUST_SHA.txt
+
+                    if [[ "${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}" == "${env.nullString}" ]]; then
+                        echo "New repo" >> list_of_changes.txt
+                    else
+                        git diff --name-only ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} ${env.GIT_COMMIT} >> list_of_changes.txt
+                    fi
+                """
+            }
+        }
+    }
+}
+
+void printEnvironmentVariables() {
+
+    echo "Environment Variables:\n\n"
+    echo "TimeStamp = ${TimeStamp}\n"
+    echo "WORKSPACE = ${WORKSPACE}\n"
+    echo "BUILD_URL = ${BUILD_URL}\n"
+    echo "JENKINS_HOME = ${JENKINS_HOME}\n"
+    echo "JENKINS_URL = ${JENKINS_URL}\n"
+    echo "JOB_URL = ${JOB_URL}\n"
+    echo "BUILD_DISPLAY_NAME = ${BUILD_DISPLAY_NAME}\n"
+    echo "JOB_NAME = ${JOB_NAME}"
+    echo "JOB_BASE_NAME = ${JOB_BASE_NAME}"
+    echo "branchName = ${branchName}"
+    echo "artifactory_docker = ${artifactory_docker}"
+    echo "artifactory_helm = ${artifactory_helm}"
+
+}
+
+void buildStage(){
+    withCredentials([usernamePassword(credentialsId: 'connbld_artifactory_api_token', passwordVariable: 'ARTIFACTORY_PASS', usernameVariable: 'ARTIFACTORY_USER')]) {
+        if (isUnix()){
+            sh """
+                /usr/bin/chmod -R 755 ${WORKSPACE}
+            """
+        }
+    }
+
+    // Since the above 'withCredentials' block is using the same credential, we could combine, although I've left separate in the event you want the first block to take action on the docker HOST, and have this block take action on the Docker CONTAINER
+    withCredentials([
+        usernamePassword(credentialsId: 'cnxhubuser_dockerHub_api_token', passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER'),
+        usernamePassword(credentialsId: 'connbld_artifactory_api_token', passwordVariable: 'ARTIFACTORY_PASS', usernameVariable: 'ARTIFACTORY_USER')]) {
+
+        // Define characteristics of the Docker registry & Dockerimage ( including Docker tag )
+        docker_registry = 'buildutils-docker.artifactory.cwp.pnp-hcl.com'
+        docker_image = 'cp-builder'
+        docker_image_tag = 'latest'
+        docker_group_id_on_host = '1002'
+
+        docker.withRegistry("https://${docker_registry}") {
+
+            docker.image("${docker_registry}/${docker_image}:${docker_image_tag}").pull()
+            docker.image("${docker_registry}/${docker_image}:${docker_image_tag}").inside("-v /var/run/docker.sock:/var/run/docker.sock --group-add ${docker_group_id_on_host}") {
+
+                sh '''
+
+                    whoami
+                    echo PATH = ${PATH}
+                    ps -ef |grep docker
+                    ps -ef |grep helm
+                    which docker
+                    which helm
+                    docker version
+
+                    env
+                    cd ${WORKSPACE}/microservices/hybridcloud/doc/samples/kudos-boards
+                    imageTag=`cat kudos_release.txt`
+                    ./uploadkudos.sh $imageTag "${artifactory_docker}" "${artifactory_helm}"
+
+                    if [ \${?} -eq 0 ]; then
+                        echo "SUCCESS! Images of $imageTag and the helm charts are published to artifactory"
+                    else
+                        echo "Failure running uploadkudos.sh"
+                        exit 1
+                    fi
+                '''
+            }
+        }
+    }
+}
+
+void createSummary() {
+
+        // Jenkins icon options --> https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16
+        // Groovy Post Build-provided options --> https://wiki.jenkins.io/display/JENKINS/Groovy+Postbuild+Plugin
+
+        def git_commit_sha_exists = fileExists 'GIT_COMMIT_SHA.txt'
+        if (git_commit_sha_exists) {
+            archiveArtifacts artifacts: 'GIT_COMMIT_SHA.txt'
+        }
+
+        def list_of_changes_exists = fileExists 'list_of_changes.txt'
+        if (list_of_changes_exists) {
+            archiveArtifacts artifacts: 'list_of_changes.txt'
+        }
+
+        manager.addShortText("Docker host: ${buildNodeExpression}","blue","white","1px","white")
+        manager.addShortText("Docker registry: ${docker_registry}","blue","white","1px","white")
+        manager.addShortText("Docker image: ${docker_image}:${docker_image_tag}","blue","white","1px","white")
+        manager.addShortText("Branch built: ${branchName}","blue","white","1px","white")
+
+        if(build_ok) {
+            manager.build.@result = hudson.model.Result.SUCCESS
+            currentBuild.result = "SUCCESS"
+        } else {
+            manager.build.@result = hudson.model.Result.FAILURE
+            currentBuild.result = "FAILURE"
+        }
+}

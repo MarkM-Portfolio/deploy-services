@@ -1,0 +1,51 @@
+# ***************************************************************** 
+#                                                                   
+# IBM Confidential                                                  
+#                                                                   
+# OCO Source Materials                                              
+#                                                                   
+# Copyright IBM Corp. 2008, 2014                                    
+#                                                                   
+# The source code for this program is not published or otherwise    
+# divested of its trade secrets, irrespective of what has been      
+# deposited with the U.S. Copyright Office.                         
+#                                                                   
+# ***************************************************************** 
+import time
+running = "websphere.cluster.running"
+partialstart = "websphere.cluster.partial.start"
+starting = "websphere.cluster.starting"
+stopped = "websphere.cluster.stopped"
+
+cellName = AdminControl.getCell()
+
+for clusterName in sys.argv :
+
+	##############################################################################
+	# Identify the ClusterMgr MBean and assign it to the clusterMgr variable.
+	##############################################################################
+	clusterMgr = AdminControl.completeObjectName('cell='+cellName+',type=ClusterMgr,*')
+	
+	##############################################################################
+	# Refresh the list of clusters.
+	##############################################################################
+	AdminControl.invoke(clusterMgr, 'retrieveClusters')
+	
+	##############################################################################
+	# Identify the Cluster MBean and assign it to the cluster variable.
+	#############################################################################
+	cluster = AdminControl.completeObjectName('cell='+cellName+',type=Cluster,name='+clusterName+',*')
+	
+	if cluster == '':
+		continue
+		
+	##############################################################################
+	# Start cluster.
+	#############################################################################
+	print "Starting cluster" + cluster
+	AdminControl.invoke(cluster, 'start')	
+	clusterStatus = AdminControl.getAttribute(cluster, "state" )
+	while (clusterStatus != running):
+		clusterStatus = AdminControl.getAttribute(cluster, "state" )
+		clusterName+" clusterStatus="+clusterStatus		
+	print "cluster started"

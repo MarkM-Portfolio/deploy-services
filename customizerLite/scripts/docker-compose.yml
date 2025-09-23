@@ -1,0 +1,65 @@
+version: '3'
+services:
+  appregistry-service:
+    restart: always
+    volumes:
+      - ../data/settings:/etc/customizer/settings
+      - ../data/jwt-secret:/etc/jwt/jwt-secret
+      - ../data/appregistry-mw-proxy-secret:/etc/customizer/appregistry-mw-proxy-secret
+    ports:
+       - "${APPREGISTRY_SERVICE_PORT}:3000"
+    image:  "${APPREGISTRY_SERVICE_IMAGE}:${APPREGISTRY_SERVICE_VERSION}"
+    environment:
+     ONPREM_BASIC: '1'
+     JWT_EXPIRES_IN_MINUTES: '10'
+     JWT_NAME: 'JWT'
+     isPublicCloud: '0'
+     CONNECTIONS_URL: 'https://${NGINX_URL}/connections'
+     CONNECTIONS_HOMEPAGE_URL: 'https://${NGINX_URL}/homepage'
+     CONNECTIONS_PROFILES_URL: 'https://${NGINX_URL}/profiles'
+     NODE_MAX_HEADER_SIZE: '${NODE_HEADER_SIZE_MAX}'
+     NODE_TLS_REJECT_UNAUTHORIZED: '0'
+     LOG_LEVEL: '${APPREGISTRY_SERVICE_LOG_LEVEL}'
+     VALIDATE_TOKEN_MATCH: 'true'
+     REDIS_INSTALLED: 'false'
+     LOCAL_DIRECTORY: '/etc/customizer'
+     CONNECTIONS_AUTH_TOKEN_NAME: '{ "cookie": "LtpaToken2", "headers": "" }'
+     CACHE_REFRESH_RATE: ${APPREGISTRY_SERVICE_CACHE_CHECK}
+  mw-proxy:
+    restart: always
+    volumes:
+      - ${CUSTOMIZATIONS_DIRECTORY}:/mnt
+      - ../data/appregistry-mw-proxy-secret:/etc/customizer/appregistry-mw-proxy-secret
+    ports:
+       - "${MW_PROXY_PORT}:3000"
+    image: "${MW_PROXY_IMAGE}:${MW_PROXY_VERSION}"
+    environment:
+      USE_SSL: 'true'
+      MW_REVERSE_PROXY: '${NGINX_URL}'
+      CUSTOMIZER_INTERSERVICE_HOST: '${CONNECTIONS_URL}'
+      CUSTOMIZER_INTERSERVICE_PORT: '443'
+      IS_PRIVATE_CLOUD: 'true'
+      REDIS_INSTALLED: 'false'
+      LOCAL_DIRECTORY: '/mnt'
+      NODE_MAX_HEADER_SIZE: '${NODE_HEADER_SIZE_MAX}'
+      ROARR_LOG: '${MW_PROXY_LOGGING_ENABLED}'
+  appregistry-client:
+    restart: always
+    volumes:
+      - ../data/jwt-secret:/etc/jwt/jwt-secret
+    ports:
+       - "${APPREGISTRY_CLIENT}:7000"
+    image: "${APPREGISTRY_CLIENT_IMAGE}:${APPREGISTRY_CLIENT_VERSION}"
+    environment:
+     LOG_LEVEL: '${APPREGISTRY_CLIENT_LOG_LEVEL}'
+     JWT_EXPIRES_IN_MINUTES: '10'
+     JWT_NAME: 'JWT'
+     CONNECTIONS_URL: 'https://${NGINX_URL}/connections'
+     CONNECTIONS_HOMEPAGE_URL: 'https://${NGINX_URL}/homepage'
+     CONNECTIONS_PROFILES_URL: 'https://${NGINX_URL}/profiles'
+     isPublicCloud: '0'
+     NODE_MAX_HEADER_SIZE: '${NODE_HEADER_SIZE_MAX}'
+     NODE_TLS_REJECT_UNAUTHORIZED: '0'
+     VALIDATE_TOKEN_MATCH: 'true'
+     CONNECTIONS_AUTH_TOKEN_NAME: '{ "cookie": "LtpaToken2", "headers": "" }'
+

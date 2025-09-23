@@ -1,0 +1,107 @@
+{{- if or (ne .Values.efsProvisioner.efsFileSystemId "fs-12345678") (.Values.efsProvisioner.dnsName) }}
+{{/*
+The `efsFileSystemId` value must be set.
+
+*/}}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: efs-provisoner
+  namespace: {{ .Values.efsProvisioner.namespace }}
+  labels:
+    app: efs-provisoner
+  annotations:
+{{ toYaml .Values.annotations | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: efs-provisoner
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+    {{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8}}
+    {{- end }}
+      labels:
+        app: efs-provisoner
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+      {{- end }}
+    spec:
+      serviceAccount: efs-provisioner
+      {{- if .Values.priorityClassName }}
+      priorityClassName: "{{ .Values.priorityClassName }}"
+      {{- end }}
+{{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range $pullSecret := .Values.image.pullSecrets }}
+        - name: {{ $pullSecret }}
+      {{- end }}
+{{- end }}
+      containers:
+      - name: awsefsprovisioner
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: FILE_SYSTEM_ID
+          value: {{ .Values.efsProvisioner.efsFileSystemId }}
+        - name: AWS_REGION
+          value: {{ .Values.efsProvisioner.awsRegion }}
+        - name: PROVISIONER_NAME
+          value: {{ .Values.efsProvisioner.provisionerName }}
+        {{- if .Values.efsProvisioner.dnsName }}
+        - name: DNS_NAME
+          value: {{ .Values.efsProvisioner.dnsName }}
+        {{- end }}
+        {{- if .Values.extraEnv }}
+        {{ toYaml .Values.extraEnv | nindent 8 }}
+        {{- end }}
+        {{- if .Values.envFrom }}
+        envFrom:
+        {{ toYaml .Values.envFrom | nindent 8 }}
+        {{- end }}
+        volumeMounts:
+        - name: pv-volume
+          mountPath: {{ .Values.efsProvisioner.path }}
+{{/*
+      {{- if ne .Values.efsProvisioner.path "/" }}
+      initContainers:
+      - name: init-path
+        image: {{ .Values.busyboxImage.repository}}
+        imagePullPolicy: {{ .Values.busyboxImage.pullPolicy }}
+        command: ['sh', '-c', 'mkdir -p /var/home/core/{{ (trimPrefix "/" .Values.efsProvisioner.path) }}']
+        securityContext:
+          runAsUser: 0
+
+        volumeMounts:
+        - name: pv-volume
+          mountPath: /var/home/core{{ .Values.efsProvisioner.path }}
+      {{- end }}
+*/}}
+      volumes:
+      - name: pv-volume
+        nfs:
+          {{- if .Values.efsProvisioner.dnsName }}
+          server: {{ .Values.efsProvisioner.dnsName }}
+          {{- else }}
+          server: {{ .Values.efsProvisioner.efsFileSystemId }}.efs.{{ .Values.efsProvisioner.awsRegion }}.amazonaws.com
+          {{- end }}
+          path: /
+{{- end }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
+    {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+    {{- end }}
+    {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations| indent 8 }}
+    {{- end }}
+

@@ -1,0 +1,24 @@
+#! /bin/bash
+
+set -o errexit
+set -o pipefail
+set +o nounset
+
+DEFAULT_HELM_HOST=""
+
+ICP_CONFIG_DIR=/opt/ibm/connections
+ICP_CONFIG_FILE=config.json
+jq=${ICP_CONFIG_DIR}/jq/bin/jq
+
+conn_locn=$(cat $ICP_CONFIG_DIR/$ICP_CONFIG_FILE | $jq -r '.connections_location')
+RUNTIME_BINS=${conn_locn}/runtime
+
+if [ "`/usr/bin/id -u`" != 0 ]; then
+	exec sudo $0 "$@"
+else
+	if [ "${HELM_HOST}" != "" -o "${DEFAULT_HELM_HOST}" = not_used ]; then
+		exec ${RUNTIME_BINS}/helm/bin/helm "$@"
+	else
+		exec ${RUNTIME_BINS}/helm/bin/helm --host=${DEFAULT_HELM_HOST} "$@"
+	fi
+fi

@@ -1,0 +1,47 @@
+{{- if .Values.elasticSearchRestore }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: job-restore
+spec:
+    template:
+      spec:
+        tolerations:
+        - key: dedicated
+          operator: Equal
+          value: infrastructure
+          effect: NoSchedule
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                - key: "type"
+                  operator: In
+                  values: ["infrastructure"]
+        containers:
+        - name: job-restore
+          image: {{ .Values.image.repository }}/elasticsearch:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ['sh', '-c',
+                    "status_text=$(/opt/elasticsearch-5.5.1/probe/doRestore.sh {{ .Values.REPONAME }} {{ .Values.SNAPSHOTNAME }}); \
+                    echo $status_text; \
+                    exit $?;" ]
+          env:
+          - name: KEY_PASS
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-secret
+                key: elasticsearch-key-password.txt
+          volumeMounts:
+          - name: es-secrets-vol
+            mountPath: /opt/elasticsearch-5.5.1/config/certs
+            readOnly: true
+        restartPolicy: OnFailure
+        volumes:
+          - name: es-secrets-vol
+            secret:
+              secretName: elasticsearch-secret
+{{- end }}

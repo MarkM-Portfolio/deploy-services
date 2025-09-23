@@ -1,0 +1,26 @@
+{
+    "name": "Connections Banner",
+    "title": "Connections Banner",
+    "description": "Configuration for the banner that will be displayed at the top of Connections pages.",
+    "services": [
+        "Connections"
+    ],
+    "state": "enabled",
+    "extensions": [
+        {
+            "name": "connections-banner",
+            "type": "com.hcl.connections.banner",
+            "payload": {
+                "open": true,
+                "message": [
+                    "This is the ",
+                    "<strong>HCL Connections Banner</strong>"
+                ],
+                "severity": "success",
+                "cacheExpiration": 20000
+            },
+            "path": "global",
+            "state": "enabled"
+        }
+    ]
+}

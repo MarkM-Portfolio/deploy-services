@@ -1,0 +1,4 @@
+global:
+  image:
+    repository: null
+  onPrem: null

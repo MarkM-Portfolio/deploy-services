@@ -1,0 +1,18 @@
+global:
+  onPrem: true
+  image:
+    repository: cp1.internal.cnx-dev.net:5000/connections
+
+multiDomainEnabled: true
+ingress:
+  hosts:
+    domain: internal.cnx-dev.net
+    publicdomain: cnx-dev.net
+
+controller:
+  service:
+    type: ClusterIP
+
+setIngressOnly: false
+
+replicaCount: 3

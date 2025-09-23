@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: solr-index-backup-for-upgrade
+spec:
+ capacity:
+   storage: 10Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Recycle
+ claimRef:
+   namespace: default
+   name: solr-index-backup-claim-for-upgrade
+ nfs:
+   path: /pv/solr-index-backup
+   server: ___NFS_SERVER_IP___

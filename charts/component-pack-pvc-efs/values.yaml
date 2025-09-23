@@ -1,0 +1,60 @@
+affinity: {}
+annotations: {}
+busyboxImage:
+  pullPolicy: IfNotPresent
+  repository: gcr.io/google_containers/busybox
+  tag: 1.27
+container_image_repo: connections-docker.artifactory.cwp.pnp-hcl.com
+efsProvisioner:
+  awsRegion: ap-south-1
+  efsFileSystemId: fs-a7c4a976
+  majorVersion: 2
+  namespace: connections
+  path: /pv-connections-test
+  probe:
+    livenessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 10
+    readinessProbe:
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 10
+  provisionerName: hcl-connections/aws-efs
+  storageClass:
+    gidAllocate:
+      enabled: true
+      gidMax: 50000
+      gidMin: 40000
+    isDefault: false
+    mountOptions: []
+    name: aws-efs
+    reclaimPolicy: Delete
+  version: 2.4.0
+envFrom: []
+extraEnv: []
+git_commit: b84635919ab5a1a18a2632c9a1643949dba8a6d4
+global:
+  deployEnv: dev
+image:
+  pullPolicy: IfNotPresent
+  repository: connections-docker.artifactory.cwp.pnp-hcl.com
+  tag: 20201109-105533
+nodeSelector: {}
+podAnnotations: {}
+podLabels: {}
+podSecurityPolicy:
+  annotations: {}
+priorityClassName: ''
+rbac:
+  create: true
+replicaCount: 1
+resources: {}
+revisionHistoryLimit: 10
+serviceAccount:
+  annotations: {}
+  create: true
+  name: ''
+tag: 20201109-105533
+timestamp: 20201109-105533
+tolerations: {}

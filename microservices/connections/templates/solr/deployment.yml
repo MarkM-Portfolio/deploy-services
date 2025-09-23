@@ -1,0 +1,275 @@
+#################################################################
+#	IBM Confidential
+#
+#	OCO Source Materials
+#
+#	Copyright IBM Corp. 2016, 2016
+#
+#	The source code for this program is not published or otherwise
+#	divested of its trade secrets, irrespective of what has been
+#	deposited with the U.S. Copyright Office.
+###################################################################
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zookeeper-controller-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: zookeeper-1
+  template:
+    metadata:
+      labels:
+        app: zookeeper-1
+        service: zookeeper
+    spec:
+      containers:
+      - name: zookeeper1
+        image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/zookeeper
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOOKEEPER_ID
+          value: "1"
+        - name: ZOOKEEPER_SERVER_1
+          value: zookeeper1
+        - name: ZOOKEEPER_SERVER_2
+          value: zookeeper2
+        - name: ZOOKEEPER_SERVER_3
+          value: zookeeper3
+#        volumeMounts:
+#        - name: zookeeper-persistent-storage-1
+#          mountPath: /var/lib/zookeeper
+#      volumes:
+#        - name: zookeeper-persistent-storage-1
+#          persistentVolumeClaim:
+#            claimName: zookeeper-persistent-storage-1
+      imagePullSecrets:
+        - name: myregkey
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zookeeper-controller-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper-2
+  template:
+    metadata:
+      labels:
+        app: zookeeper-2
+        service: zookeeper
+    spec:
+      containers:
+      - name: zookeeper2
+        image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/zookeeper
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOOKEEPER_ID
+          value: "2"
+        - name: ZOOKEEPER_SERVER_1
+          value: zookeeper1
+        - name: ZOOKEEPER_SERVER_2
+          value: zookeeper2
+        - name: ZOOKEEPER_SERVER_3
+          value: zookeeper3
+#        volumeMounts:
+#        - name: zookeeper-persistent-storage-2
+#          mountPath: /var/lib/zookeeper
+#      volumes:
+#        - name: zookeeper-persistent-storage-2
+#          persistentVolumeClaim:
+#            claimName: zookeeper-persistent-storage-2
+      imagePullSecrets:
+        - name: myregkey
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zookeeper-controller-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper-3  
+  template:
+    metadata:
+      labels:
+        app: zookeeper-3
+        service: zookeeper
+    spec:
+      containers:
+      - name: zookeeper3
+        image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/zookeeper
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOOKEEPER_ID
+          value: "3"
+        - name: ZOOKEEPER_SERVER_1
+          value: zookeeper1
+        - name: ZOOKEEPER_SERVER_2
+          value: zookeeper2
+        - name: ZOOKEEPER_SERVER_3
+          value: zookeeper3
+#        volumeMounts:
+#        - name: zookeeper-persistent-storage-3
+#          mountPath: /var/lib/zookeeper
+#      volumes:
+#        - name: zookeeper-persistent-storage-3
+#          persistentVolumeClaim:
+#            claimName: zookeeper-persistent-storage-3
+      imagePullSecrets:
+        - name: myregkey
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: solr1
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      name: solr1
+      labels:
+        name: solr1
+    spec:
+      containers:
+        - name: solr1
+          image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/solr-basic
+          env:
+            - name: MULTI_NODE
+              value: "true"
+            - name: SOLR_SERVICE_NAME
+              value: "solr1"
+            - name: ZOOKEEPER_NODE
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: zookeeper-nodes
+          ports:
+            - containerPort: 8983
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - /opt/solr/bin/solr status | grep "running on port"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+#          volumeMounts:
+#          - name: solr-persistent-storage-1
+#            mountPath: /home/solr/example/cloud/node1/solr
+#      volumes:
+#        - name: solr-persistent-storage-1
+#          persistentVolumeClaim:
+#            claimName: solr-persistent-storage-1
+      imagePullSecrets:
+        - name: myregkey
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: solr2
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      name: solr2
+      labels:
+        name: solr2
+    spec:
+      containers:
+        - name: solr2
+          image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/solr-basic
+          env:
+            - name: MULTI_NODE
+              value: "true"
+            - name: SOLR_SERVICE_NAME
+              value: "solr2"
+            - name: ZOOKEEPER_NODE
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: zookeeper-nodes
+          ports:
+            - containerPort: 8983
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - /opt/solr/bin/solr status | grep "running on port"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+#          volumeMounts:
+#          - name: solr-persistent-storage-2
+#            mountPath: /home/solr/example/cloud/node1/solr
+#      volumes:
+#        - name: solr-persistent-storage-2
+#          persistentVolumeClaim:
+#            claimName: solr-persistent-storage-2
+      imagePullSecrets:
+        - name: myregkey
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: solr3
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      name: solr3
+      labels:
+        name: solr3
+    spec:
+      containers:
+        - name: solr3
+          image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/solr-basic
+          env:
+            - name: MULTI_NODE
+              value: "true"
+            - name: SOLR_SERVICE_NAME
+              value: "solr3"
+            - name: ZOOKEEPER_NODE
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: zookeeper-nodes
+          ports:
+            - containerPort: 8983
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - /opt/solr/bin/solr status | grep "running on port"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+#          volumeMounts:
+#          - name: solr-persistent-storage-3
+#            mountPath: /home/solr/example/cloud/node1/solr
+#      volumes:
+#        - name: solr-persistent-storage-3
+#          persistentVolumeClaim:
+#            claimName: solr-persistent-storage-3
+      imagePullSecrets:
+        - name: myregkey

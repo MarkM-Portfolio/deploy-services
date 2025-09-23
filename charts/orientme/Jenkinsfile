@@ -1,0 +1,18 @@
+/* OCO Source Materials                                            */
+/*                                                                 */
+/* Copyright HCL Technologies Limited 2021, 2023                   */
+/*                                                                 */
+/* The source code for this program is not published or otherwise  */
+/* divested of its trade secrets, irrespective of what has been    */
+/* deposited with the U.S. Copyright Office.                       */
+/*                                                                 */
+/* *************************************************************** */
+
+// Quickstart <https://git.cwp.pnp-hcl.com/connections/quickstart>
+@Library('quickstart') _
+
+qs {
+	plugin = 'chart_of_charts'
+	helmDeps = ['itm-services', 'orient-web-client', 'orient-analysis-service', 'orient-indexing-service', 'middleware-graphql',
+              'orient-retrieval-service', 'people-scoring', 'people-datamigration', 'people-relationship', 'people-idmapping', 'community-suggestions']
+}

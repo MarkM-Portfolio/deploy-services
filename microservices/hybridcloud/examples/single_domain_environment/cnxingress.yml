@@ -1,0 +1,11 @@
+global:
+  onPrem: true
+  image:
+    repository: cp1.internal.cnx-dev.net:5000/connections
+
+multiDomainEnabled: false
+ingress:
+  hosts:
+    domain: internal.cnx-dev.net
+
+replicaCount: 3

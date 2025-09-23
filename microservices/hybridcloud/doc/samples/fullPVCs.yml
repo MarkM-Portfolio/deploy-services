@@ -1,0 +1,201 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: mongo-persistent-storage-mongo-0
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 8Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: mongo-persistent-storage-mongo-1
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 8Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: mongo-persistent-storage-mongo-2
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 8Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: solr-data-pvc-solr-0
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: solr-data-pvc-solr-1
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: solr-data-pvc-solr-2
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 10Gi
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: zookeeper-data-pvc-zookeeper-0
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 2Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: zookeeper-data-pvc-zookeeper-1
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 2Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: zookeeper-data-pvc-zookeeper-2
+ namespace: connections
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 2Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: connections
+  name: es-pvc-backup
+  labels:
+    component: elasticsearch
+    role: es-pvc-backup
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: anything
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-pv-backup
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: connections
+  name: es-pvc-es-data-0
+  labels:
+    component: elasticsearch
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: anything
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-data-0
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: connections
+  name: es-pvc-es-data-1
+  labels:
+    component: elasticsearch
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: anything
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-data-1
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: connections
+  name: es-pvc-es-data-2
+  labels:
+    component: elasticsearch
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: anything
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-data-2
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: connections
+  name: customizernfsclaim
+spec:
+  selector:
+     matchLabels:
+        app: customizervolumeapp
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---

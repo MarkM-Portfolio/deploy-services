@@ -1,0 +1,33 @@
+﻿LIZENZINFORMATIONEN
+
+Programmname:
+HCL Connections Component Pack v7.0 (Add-on)
+
+Für die Verwendung des Programms durch den Lizenznehmer gelten die folgenden Standardbedingungen.
+
+Begrenztes Nutzungsrecht
+
+Wie in der Master-Lizenzvereinbarung und diesen Lizenzinformationen beschrieben, gewährt HCL dem Lizenznehmer ein begrenztes Recht zur Nutzung des Programms. Dieses Recht ist auf den Umfang der Nutzungsberechtigung, z. B. Prozessor-Value-Unit („PVU“), Ressourcen-Value-Unit („RVU“) oder Value-Unit („VU“) oder auf eine andere angegebene Nutzungsstufe beschränkt, für die der Lizenznehmer laut Berechtigungsnachweis bezahlt hat. Die Nutzung durch den Lizenznehmer kann außerdem auf einen bestimmten Rechner beschränkt sein. Ggf. darf er das Programm auch nur als Unterstützungsprogramm verwenden, oder die Nutzung kann anderen Beschränkungen unterliegen. Da der Lizenznehmer nicht für den gesamten wirtschaftlichen Wert des Programms bezahlt hat, sind andere Nutzungsarten ohne Zahlung zusätzlicher Gebühren untersagt. Ferner ist der Lizenznehmer nicht berechtigt, das Programm zur Bereitstellung kommerzieller IT-Services für Dritte, zur Bereitstellung kommerzieller Hosting-Services oder für kommerziell betriebenes Time-Sharing zu nutzen oder das Programm zu vermieten, zu verleasen oder Unterlizenzen für das Programm zu vergeben, sofern dies in den maßgeblichen Vereinbarungen, unter denen der Lizenznehmer die Berechtigungen zur Nutzung des Programms erworben hat, nicht ausdrücklich vorgesehen ist. Dem Lizenznehmer werden vorbehaltlich der Zahlung zusätzlicher Gebühren oder unter abweichenden oder ergänzenden Bedingungen ggf. weitere Rechte eingeräumt. IBM behält sich das Recht vor, darüber zu entscheiden, ob dem Lizenznehmer weitere Rechte dieser Art gewährt werden.
+
+Spezifikationen
+
+Die Programmspeziﬁkationen sind den Abschnitten „Description“ (Beschreibung) und „Technical Information“ (Technische Daten) der Ankündigungsschreiben für das Programm zu entnehmen.
+
+Unzulässige Verwendungen 
+
+Der Lizenznehmer darf das Programm nicht verwenden, wenn ein Versagen des Programms zum Tod, zu Verletzungen oder zu Sach- oder Umweltschäden führen kann. 
+
+Begrenzte Verwendung des Programms 
+
+Dieses Programm wird nur zur Verwendung mit einem oder mehreren benannten und nachstehend angegebenen Programmen oder Services oder deren Nachfolgern bereitgestellt.  Es ist dem Lizenznehmer untersagt, dieses Programm in Verbindung mit einer anderen Software oder einem anderen Service zu verwenden. 
+
+Benannte(s) Programm(e) und/oder benannte(r) Service(s): 
+
+HCL Connections 7.0
+HCL Connections 6.5
+HCL Connections 6.0 Interim Feature Release 1
+HCL Connections 6.0 
+
+Zusätzlich zu den obigen Bedingungen sind bei der Nutzung des Programms durch den Lizenznehmer die folgenden Bestimmungen zu beachten. 
+
+Das vorliegende Lizenzinformationsdokument stellt den Nachweis der Programmberechtigung des Lizenznehmers dar. Für die Verwendung des Programms sind keine zusätzlichen Berechtigungen erforderlich.

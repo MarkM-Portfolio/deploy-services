@@ -1,0 +1,65 @@
+# Default values for createvolumes.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Namespace where all k8s controller should be deployed to
+namespace: connections
+
+# IP Address of NFS Server
+nfs:  
+  server: null
+
+persistentVolumeReclaimPolicy: Retain
+
+storageClassName: anything
+
+persistentVolumePath: pv-connections
+
+mongo: 
+  enabled: true
+  capacity:
+    storage: "8Gi"
+  resources:
+    requests:
+      storage: "8Gi"
+
+solr:
+  enabled: true
+  capacity:
+    storage: "10Gi"  
+  resources:
+    requests:
+      storage: "10Gi"
+
+zk:
+  enabled: true
+  capacity:
+    storage: "2Gi"
+  resources:
+    requests:
+      storage: "2Gi"  
+
+es: 
+  enabled: true
+  capacity:
+    storage: "10Gi"
+  resources:
+    requests:
+      storage: "10Gi"  
+
+es7: 
+  enabled: true
+  capacity:
+    storage: "10Gi"
+  resources:
+    requests:
+      storage: "10Gi"        
+
+customizer: 
+  enabled: true
+  capacity:
+    storage: "2Gi"
+  resources:
+    requests:
+      storage: "2Gi"
+  

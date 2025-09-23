@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: connections-env
+  labels:
+    app: connections
+data:
+  smartcloud-env-name: "${environment['smartcloud-env-name']}"
+  orient-cnx-host: "${environment['appsEndPoint']}"
+  orient-cnx-port: "443"
+  orient-cnx-scheme: "https"
+  orient-cnx-interservice-host: "${environment['acSide0EndPoint']}"
+  orient-cnx-interservice-port: "9086"
+  orient-cnx-interservice-scheme: "http"
+  user-profile-service-name: "userprofiles.${environment['smartcloud-env-name']}.conncloudk8s.com"
+  user-profile-service-port: "9100"
+  user-profile-service-cnx-s2stoken: "${environment['s2sToken']}"
+  user-profile-service-debug: "0"
+  user-profile-service-search-port: "9094"
+  user-profile-service-profile-port: "9093"
+  user-profile-service-communities-port: "9087"
+  user-profile-service-highway-port: "9090"
+  user-profile-service-user-file: "/toscana_rpms/users.json"
+  mw-proxy-port: "9880"
+  redis-node-service-name: "redis-sentinel"
+  redis-port: "26379"
+  mongo-rs-name: rs0
+  mongo-rs-members-hosts: mongo-0.mongo:27017,mongo-1.mongo:27017,mongo-2.mongo:27017
+  zookeeper-nodes: "zookeeper1:2181,zookeeper2:2181,zookeeper3:2181"

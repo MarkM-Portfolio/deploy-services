@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mwproxy
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      name: mwproxy
+      labels:
+        name: mwproxy
+    spec:
+      containers:
+        - name: mwproxy
+          image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/mw-proxy
+          env:
+            - name: ORIENT_CNX_INTERSERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: orient-cnx-interservice-host
+            - name: FILE_SERVICE_HOST
+              value: file-services
+            - name: FILE_SERVICE_PORT
+              value: "3001"
+            - name: NODE_ENV
+              value: production
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
+            - name: MW_PROXY_PORT
+              value: "3000"
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: connections-env
+                  key: user-profile-service-debug
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: mwproxy
+              containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+      imagePullSecrets:
+        - name: myregkey

@@ -1,0 +1,98 @@
+import java.io.File
+properties([
+    buildDiscarder(
+        logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '7', numToKeepStr: '100')),
+        parameters([
+            string(defaultValue: 'allineone-cp-aws', name: "NODE", trim: true),
+            choice(choices: ['', '6.0.0.8', '6.0.0.7', '6.0.0.6', '6.0.0.5iFix1'], 
+                description: 'Choose a production released build (e.g. 6.0.0.6) or leave blank to use filename_zip.', 
+                name: 'production_zip'),
+            string(defaultValue: 'hybridcloud_20190614-031329.zip', description: 'Specify build of hybridcloud zip. If blank, will use latest.', name: 'filename_zip', trim: false),
+            choice(choices: ['No', 'Yes'], description: '', name: 'dev_build'),
+            choice(choices: ['hybrid_cloud', 'multi_tenant'], description: 'Deployment Type.', name: 'deploymentType'),
+            choice(choices: ['uninstall', 'upgrade'], description: 'Uninstall or upgrade a chart if already installed.', name: 'uninstall_or_upgrade'),
+            choice(choices: ['private', 'icp', 'artifactory'], description: 'Only change to icp if deploying onto a 6.0.0.5 ICp env', name: 'docker_registry_type'),
+            string(defaultValue: 'wasadmin', description: 'Required - IC Admin Username.', name: 'ic_admin_username', trim: false),
+            password(defaultValue: '', description: 'Required - IC Admin Password.', name: 'ic_admin_password'),
+            choice(choices: ['No', 'Yes'], description: 'install_K8_dashbaord', name: 'install_K8_dashbaord'),
+            string(defaultValue: '', description: 'HCL Connections front door address (e.g. load balancer). Required for connections-env.', name: 'ic_host', trim: false),
+            string(defaultValue: '', description: 'HCL Connections HTTP Server. Required for connections-env.', name: 'ic_internal', trim: false),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Install/upgrade orientme helm chart (as well as infrastructure helm chart which orientme requires).', 
+                name: 'orientme'),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Install/upgrade mw-proxy helm chart (as well as infrastructure helm chart which customizer requires).', 
+                name: 'customizer'),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Install/upgrade elasticsearch helm chart.', 
+                name: 'elasticsearch'),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Install/upgrade elasticsearch7 helm chart.', 
+                name: 'elasticsearch7'),
+            choice(choices: ['preferred', 'required'], 
+                description: 'required=es pods will only deploy to an "infrastructure" labelled node, preferred=es pods will try to deploy to an "infrastructure" labelled node but will not guarantee.', 
+                name: 'es_node_affinity'),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Install/upgrade sanity and sanity-watcher helm chart.', 
+                name: 'sanity'),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Install/upgrade elasticstack helm chart.', 
+                name: 'elasticstack'),
+            string(defaultValue: '', description: 'cron syntax e.g. Every 1 hour="0 */1 * * *". If left blank, the default values of once a day is set.', name: 'curator_schedule', trim: false),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Skip configure redis.', 
+                name: 'skip_configure_redis'),
+            string(defaultValue: '', description: 'Only required for HA env (load balancer or virtual IP).', name: 'ha_fronting_master', trim: false),
+            choice(choices: ['Yes', 'No'], 
+                description: 'Enforce SSL for communications between Orient Me and Connections.', 
+                name: 'enforceSSL'),
+            choice(choices: ['true', 'false'], description: '', name: 'enable_sophosav')
+            ]
+        )
+    ])
+
+stage('build') {
+    node(params.NODE) {
+        withEnv(['LIST=deployPinkV2.sh']) {
+            withCredentials([usernamePassword(credentialsId: 'icdeploy_hcl_auth_by_gittoken', passwordVariable: 'GIT_TOKEN', usernameVariable: 'GIT_USER')]) {
+                sh '''
+                    #!/bin/bash
+
+                    # Download files with icdeploy@pnp-hcl.com credentials:
+                    echo
+                    echo "Downloading script..."
+                    OWNER="naveen-bajjuri"
+                    for file in ${LIST}; do
+                        rm -rf $file
+                        PATH_FILE="scripts/${file}"
+                        FILE="https://git.cwp.pnp-hcl.com/api/v3/repos/$OWNER/deploy-services/contents/$PATH_FILE"
+                        curl -H "Authorization: token $GIT_TOKEN" \\
+                        -H "Accept: application/vnd.github.v3.raw" \\
+                        -O \\
+                        -L $FILE
+                    done
+                '''
+            }
+
+            script {
+                exitCode = sh script: 'find -name "${LIST}" | egrep .', returnStatus: true
+                boolean exists = exitCode == 0
+                if (exists) {
+                    shell_script = '''
+                        #!/bin/bash
+                        env
+                        bash ${LIST}
+                    '''
+                    withCredentials([
+                        usernamePassword(credentialsId: 'icdeploy_hcl_auth_by_token', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USER'),
+                        usernamePassword(credentialsId: 'icdeploy_hcl_auth_by_gittoken', passwordVariable: 'GIT_TOKEN', usernameVariable: 'GIT_USER'),
+                    ]) {
+                        sh shell_script
+                    }
+                } else {
+                    println "File doesn't exist"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+# namespace where all k8s controller should be deployed to
+namespace: connections
+
+# number of replicas (PODs) that will be created
+replicaCount: 3
+
+imagePullSecrets:
+ name: myregkey
+
+image:
+ repository: connections-docker.artifactory.cwp.pnp-hcl.com
+ tag: latest
+ pullPolicy: IfNotPresent 
+
+resources: 
+ limits:
+  cpu: "<enter value here>"
+  memory: "<enter value here>"
+ requests:
+  cpu: "<enter value here>"
+  memory: "<enter value here>"
+
+env:
+ envVarName: "<enter value here>"
+
+service:
+ type: NodePort

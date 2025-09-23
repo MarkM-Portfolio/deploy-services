@@ -1,0 +1,44 @@
+###################################################################
+#       IBM Confidential
+#
+#       OCO Source Materials
+#
+#       Copyright IBM Corp. 2016, 2016
+#
+#       The source code for this program is not published or otherwise
+#       divested of its trade secrets, irrespective of what has been
+#       deposited with the U.S. Copyright Office.
+###################################################################
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: retrievalservice
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: retrievalservice
+      labels:
+        name: retrievalservice
+    spec:
+      containers:
+      - name: retrievalservice
+        image: 905409959051.dkr.ecr.us-east-1.amazonaws.com/connections-docker/retrieval-service
+        ports:
+        - containerPort: 9102
+        env:
+        - name: ZOOKEEPER_NODE
+          valueFrom:
+            configMapKeyRef:
+              name: connections-env
+              key: zookeeper-nodes
+        readinessProbe:
+          exec:
+            command:
+              - /opt/ibm/toscana/readiness.sh
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      imagePullSecrets:
+        - name: myregkey
+

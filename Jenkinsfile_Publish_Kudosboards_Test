@@ -1,0 +1,81 @@
+import java.io.File
+properties([
+    buildDiscarder(
+        logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '7', numToKeepStr: '100')),
+        parameters([
+            string(defaultValue: 'allineone-cp-aws', name: "NODE", trim: true)
+        ])
+    ])
+
+stage('build') {
+    node(params.NODE) {
+        withEnv(['FILE1=uploadkudos.sh']) {
+            withCredentials([usernamePassword(credentialsId: 'icdeploy_hcl_auth_by_gittoken', passwordVariable: 'GIT_TOKEN', usernameVariable: 'GIT_USER')]) {
+                sh '''
+                    #!/bin/bash
+
+                    # Download files with icdeploy@pnp-hcl.com credentials:
+                    echo
+                    OWNER="connections"
+                    for file in ${FILE1} ; do
+                        rm -rf $file
+                        echo "Downloading script...${file}"
+                        PATH_FILE="microservices/hybridcloud/doc/samples/kudos-boards/${file}"
+                        FILE="https://git.cwp.pnp-hcl.com/api/v3/repos/$OWNER/deploy-services/contents/$PATH_FILE"
+                        curl -H "Authorization: token $GIT_TOKEN" \\
+                        -H "Accept: application/vnd.github.v3.raw" \\
+                        -O \\
+                        -L $FILE
+                    done
+                '''
+            }
+            script {
+                def f1_exitCode = sh script: 'find -name ${FILE1} | egrep .', returnStatus: true
+                boolean exists = f1_exitCode == 0
+            }
+        }
+        withEnv(['FILE2=kudos_release.txt']) {
+            withCredentials([usernamePassword(credentialsId: 'icdeploy_hcl_auth_by_gittoken', passwordVariable: 'GIT_TOKEN', usernameVariable: 'GIT_USER')]) {
+                sh '''
+                    #!/bin/bash
+
+                    # Download files with icdeploy@pnp-hcl.com credentials:
+                    echo
+                    OWNER="connections"
+                    for file in ${FILE2} ; do
+                        rm -rf $file
+                        echo "Downloading script...${file}"
+                        PATH_FILE="microservices/hybridcloud/doc/samples/kudos-boards/${file}"
+                        FILE="https://git.cwp.pnp-hcl.com/api/v3/repos/$OWNER/deploy-services/contents/$PATH_FILE"
+                        curl -H "Authorization: token $GIT_TOKEN" \\
+                        -H "Accept: application/vnd.github.v3.raw" \\
+                        -O \\
+                        -L $FILE
+                    done
+                '''
+            }
+            script {
+                def f2_exitCode = sh script: 'find -name ${FILE2} | egrep .', returnStatus: true
+                boolean exists = f2_exitCode == 0
+            }
+        }    
+
+        script {
+            shell_script = '''
+                #!/bin/bash
+
+                LIST1="uploadkudos.sh"
+                LIST2="kudos_release.txt"
+                imageTag=`cat ${LIST2}`
+                env
+                bash ${LIST1} ${imageTag}
+            '''
+            withCredentials([
+                usernamePassword(credentialsId: 'dockerHub_auth_by_token', passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER'), 
+                usernamePassword(credentialsId: 'icdeploy_hcl_auth_by_token', passwordVariable: 'ARTIFACTORY_PASS', usernameVariable: 'ARTIFACTORY_USER')
+            ]) {
+                sh shell_script
+            }        
+        }
+    }
+}

@@ -1,0 +1,19 @@
+onPrem: False
+ic:
+  host: web1.cnx-dev.net
+  internal: connections1.internal.cnx-dev.net
+  interserviceOpengraphPort: 443
+  interserviceConnectionsPort: 443
+  interserviceScheme: https
+integrations:
+  msteams:
+    enabled: True
+    tenant:
+      id: changeme
+    client:
+      id: changeme
+      secret: changeme
+    auth:
+      schema: 0
+createSecret: false
+replicaCount: 3

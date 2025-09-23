@@ -1,0 +1,346 @@
+{{- if .Values.mongo.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: mongo-persistent-storage-mongo-0
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.mongo.resources.requests.storage }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: mongo-persistent-storage-mongo-1
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.mongo.resources.requests.storage }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: mongo-persistent-storage-mongo-2
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.mongo.resources.requests.storage }}
+---
+{{- end }}
+{{- if .Values.solr.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: solr-data-pvc-solr-0
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.solr.resources.requests.storage }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: solr-data-pvc-solr-1
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.solr.resources.requests.storage }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: solr-data-pvc-solr-2
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.solr.resources.requests.storage }}
+
+---
+{{- end }}
+{{- if .Values.zk.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: zookeeper-data-pvc-zookeeper-0
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.zk.resources.requests.storage }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: zookeeper-data-pvc-zookeeper-1
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.zk.resources.requests.storage }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+ name: zookeeper-data-pvc-zookeeper-2
+ namespace: {{ .Values.namespace }}
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: {{ .Values.zk.resources.requests.storage }}
+---
+{{- end }}
+{{- if .Values.es.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-backup
+  labels:
+    component: elasticsearch
+    role: es-pvc-backup
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-pv-backup
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-data-0
+  labels:
+    component: elasticsearch
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-data-0
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-data-1
+  labels:
+    component: elasticsearch
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-data-1
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-data-2
+  labels:
+    component: elasticsearch
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: es-data-2
+---
+{{- end }}
+{{- if .Values.es7.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-backup-7
+  labels:
+    component: elasticsearch7
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es7.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch7
+      role: es-backup-7
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-master-7-0
+  labels:
+    component: elasticsearch7
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es7.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch7
+      role: es-master-7-0
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-master-7-1
+  labels:
+    component: elasticsearch7
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es7.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch7
+      role: es-master-7-1
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-master-7-2
+  labels:
+    component: elasticsearch7
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es7.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch7
+      role: es-master-7-2
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-data-7-0
+  labels:
+    component: elasticsearch7
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es7.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch7
+      role: es-data-7-0
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-data-7-1
+  labels:
+    component: elasticsearch7
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es7.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch7
+      role: es-data-7-1
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: es-pvc-es-data-7-2
+  labels:
+    component: elasticsearch7
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.es7.resources.requests.storage }}
+  selector:
+    matchLabels:
+      component: elasticsearch7
+      role: es-data-7-2
+---
+{{- end }}
+{{- if .Values.customizer.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: customizernfsclaim
+spec:
+  selector:
+     matchLabels:
+        app: customizervolumeapp
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.customizer.resources.requests.storage }}
+---
+{{- end }}
